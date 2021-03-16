@@ -8,17 +8,24 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Entity" Collapsed="true">
-    <Position X="2.75" Y="1.75" Width="1.5" />
+    <Position X="2" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>NgACAAABAAAEASAIAgAAAACAACAAEBQAAEAAAAAABAI=</HashCode>
       <FileName>Entity.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Player" Collapsed="true">
-    <Position X="2.75" Y="3.5" Width="1.5" />
+    <Position X="2" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
       <FileName>Player.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Item" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Item.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

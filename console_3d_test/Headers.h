@@ -12,6 +12,7 @@ using namespace std;
 #include "DynamicArray.h"
 #include "Map.h"
 #include "GameObject.h"
+#include "Item.h"
 #include "Entity.h"
 #include "Player.h"
 #include "ConsoleBufferString.h"

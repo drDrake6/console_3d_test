@@ -20,7 +20,7 @@ class ConsoleBufferString
 	ConsoleBufferString& operator=(ConsoleBufferString&& orig) = delete;
 	~ConsoleBufferString();
 		
-	void PrintVerticalLine(float Ray_size, int current_rays_amount, bool Is_wallblock_conor);
+	void PrintVerticalLine(char symbol, float Ray_size, int current_rays_amount, bool Is_wallblock_conor);
 
 public:
 	void HideCursor();
