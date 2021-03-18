@@ -50,18 +50,20 @@ ConsoleBufferString::~ConsoleBufferString()
 	}
 }
 
-void ConsoleBufferString::PrintVerticalLine(char symbol, float ray_size, int current_rays_amount, bool Is_wallblock_conor)
+void ConsoleBufferString::PrintVerticalLine(char symbol, float position_ray_x, float ray_size, int current_rays_amount, bool Is_wallblock_conor)
 {
-	int hjghest_y = (float)(_console_height / 2.0f) - (float)_console_height / ray_size;
-	int lowest_y = _console_height - hjghest_y;
-
 	if (symbol == '#')
 	{
+		previous_symbol = '!';
+
+		int highest_y = (float)(_console_height / 2.0f) - (float)_console_height / ray_size;
+		int lowest_y = _console_height - highest_y;
+
 		for (int j = 0; j < _console_height; j++)
 		{
-			if (j < hjghest_y)
+			if (j < highest_y)
 				screen[j * _console_width + current_rays_amount] = ' ';
-			else if (j >= hjghest_y && j <= lowest_y)
+			else if (j >= highest_y && j <= lowest_y)
 			{
 				if (Is_wallblock_conor)
 				{
@@ -109,6 +111,30 @@ void ConsoleBufferString::PrintVerticalLine(char symbol, float ray_size, int cur
 				{
 					screen[j * _console_width + current_rays_amount] = '#';
 				}
+			}
+		}
+	}
+	else if (symbol == 'o')
+	{
+		float radius = (_console_height / 2) * 0.6;
+		float center = (float)(trunc(position_ray_x)) + 0.5f;
+		float x = position_ray_x + (abs(center - position_ray_x) * radius) / 0.5;
+
+		float r_sqare = pow((_console_height / 2) * 0.6, 2);
+		float x_sqare = pow((x - center), 2);
+		int height = 2 * sqrt(r_sqare - x_sqare);
+
+		int highest_y = (float)(_console_height / 2.0f) - (float)height / ray_size;
+		int lowest_y = _console_height - highest_y;
+
+		for (int j = 0; j < _console_height; j++)
+		{
+			if (j >= highest_y && j <= lowest_y)
+			{				
+				screen[j * _console_width + current_rays_amount] = (wchar_t)symbol;
+				#ifdef DEBUG
+					WriteConsoleOutputCharacter(hConsole, screen, _size, FirstCell, &dwBytesWritten);
+				#endif
 			}
 		}
 	}
@@ -201,7 +227,7 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 	float conor_per_ray = player->GetConorOfView() / _console_width;
 	float current_conor = player->GetView_Position();
 	float Point_On_RayX;
-	float Point_On_RayY;
+	float Point_On_RayY;	
 
 	for (int i = _console_width - 1; i >= 0; i--)
 	{
@@ -220,39 +246,67 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 			Point_On_RayX = player->GetPosition_X() + ray_size * conor_cos;
 			Point_On_RayY = player->GetPosition_Y() + ray_size * conor_sin;
 
-			if (map[(short)Point_On_RayX][(short)Point_On_RayY] != ' ')
+			if (map[(short)Point_On_RayX][(short)Point_On_RayY] != ' '
+				/*&& map[(short)Point_On_RayX][(short)Point_On_RayY] != previous_symbol*/)
 			{
-				vector<pair<float, float>> p;
-				for (int wall_conor_y = 0; wall_conor_y < 2; wall_conor_y++)
+				//previous_symbol = map[(short)Point_On_RayX][(short)Point_On_RayY];
+
+				if (map[(short)Point_On_RayX][(short)Point_On_RayY] != '#')
 				{
-					for (int wall_conor_x = 0; wall_conor_x < 2; wall_conor_x++)
-					{
-						float vect_y = (int)Point_On_RayY + wall_conor_y - player->GetPosition_Y();
-						float vect_x = (int)Point_On_RayX + wall_conor_x - player->GetPosition_X();
+					pair<char, float> first = {
+						map[(short)Point_On_RayX][(short)Point_On_RayY],  
+						Point_On_RayX };
 
-						float current_rayX = Point_On_RayX - player->GetPosition_X();
-						float current_rayY = Point_On_RayY - player->GetPosition_Y();
+					pair<float, int> second = {ray_size, i};
 
-						float module = sqrt(pow(vect_x, 2) + pow(vect_y, 2));
-
-						float scalar_product = current_rayY * vect_y + current_rayX * vect_x;
-						float modules_product = module * ray_size;
-						float current_cos = scalar_product / modules_product;
-						p.push_back(make_pair(module, current_cos));
-					}
+					DetectedObjects.push({ first, second });
 				}
 
-				sort(p.begin(), p.end());
+				if (map[(short)Point_On_RayX][(short)Point_On_RayY] == '#')
+				{
+					vector<pair<float, float>> p;
+					for (int wall_conor_y = 0; wall_conor_y < 2; wall_conor_y++)
+					{
+						for (int wall_conor_x = 0; wall_conor_x < 2; wall_conor_x++)
+						{
+							float vect_y = (int)Point_On_RayY + wall_conor_y - player->GetPosition_Y();
+							float vect_x = (int)Point_On_RayX + wall_conor_x - player->GetPosition_X();
 
-				if (acos(p.at(0).second) <= conor_per_ray / 2)
-					Is_wallblock_conor = true;
-				if (acos(p.at(1).second) <= conor_per_ray / 2)
-					Is_wallblock_conor = true;
-				if (acos(p.at(2).second) <= conor_per_ray / 2)
-					Is_wallblock_conor = true;
+							float current_rayX = Point_On_RayX - player->GetPosition_X();
+							float current_rayY = Point_On_RayY - player->GetPosition_Y();
 
-				PrintVerticalLine(map[(short)Point_On_RayX][(short)Point_On_RayY], ray_size, i, Is_wallblock_conor);
-				break;
+							float module = sqrt(pow(vect_x, 2) + pow(vect_y, 2));
+
+							float scalar_product = current_rayY * vect_y + current_rayX * vect_x;
+							float modules_product = module * ray_size;
+							float current_cos = scalar_product / modules_product;
+							p.push_back(make_pair(module, current_cos));
+						}
+					}
+
+
+					sort(p.begin(), p.end());
+
+					if (acos(p.at(0).second) < conor_per_ray / 2)
+						Is_wallblock_conor = true;
+					if (acos(p.at(1).second) < conor_per_ray / 2)
+						Is_wallblock_conor = true;
+					if (acos(p.at(2).second) < conor_per_ray / 2)
+						Is_wallblock_conor = true;
+
+					PrintVerticalLine(map[(short)Point_On_RayX][(short)Point_On_RayY],
+						Point_On_RayX, ray_size, i, Is_wallblock_conor);
+
+					while (!DetectedObjects.empty())
+					{
+						pair<pair<char, float>, pair<float, int>> object = DetectedObjects.top();
+						DetectedObjects.pop();
+						PrintVerticalLine(object.first.first, object.first.second,
+							object.second.first, object.second.second, 0);
+					}
+
+					break;
+				}				
 			}
 		}
 		if (current_conor + conor_per_ray >= 360)
@@ -265,14 +319,17 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 		}
 	}
 
+
 	PrintDebugInfo(player, map, _fps);
 
+#ifndef DEBUG
 	WriteInBuffer();
+#endif
 }
 
 void ConsoleBufferString::PrintDebugInfo(Entity* player, Map& map, FPS& _fps)
 {
-	swprintf_s(screen, 40, L"X=%3.2f, Y=%3.2f, PV=%3d, FPS=%2.2f", 
+	swprintf_s(screen, 42, L"X=%3.2f, Y=%3.2f, PV=%3d, FPS=%2.2f", 
 		player->GetPosition_X(), player->GetPosition_Y(), 
 		(int)abs(((player->GetView_Position() * 180.0f) / 3.14f)) % 360, 
 		1.0f / _fps.GetFPS());

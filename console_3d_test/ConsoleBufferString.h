@@ -10,6 +10,8 @@ class ConsoleBufferString
 	int _size = 0;
 	int _console_width;
 	int _console_height;	
+	char previous_symbol;
+	stack<pair<pair<char, float>, pair<float, int>>> DetectedObjects;
 	const COORD FirstCell = { 0, 0 };
 	DWORD dwBytesWritten = 0;
 	static ConsoleBufferString* _self;		
@@ -20,7 +22,7 @@ class ConsoleBufferString
 	ConsoleBufferString& operator=(ConsoleBufferString&& orig) = delete;
 	~ConsoleBufferString();
 		
-	void PrintVerticalLine(char symbol, float Ray_size, int current_rays_amount, bool Is_wallblock_conor);
+	void PrintVerticalLine(char symbol, float position_ray_x, float Ray_size, int current_rays_amount, bool Is_wallblock_conor);
 
 public:
 	void HideCursor();

@@ -1,12 +1,10 @@
 ﻿#include "Headers.h"
 
-
-
 int main()
 {
-	//system("mode con cols=160 lines=57");
+	system("mode con cols=120 lines=40");
 
-	ConsoleBufferString* buffer = ConsoleBufferString::Instance(_FULL_SCREAN_);
+	ConsoleBufferString* buffer = ConsoleBufferString::Instance(_WINDOW_);
 	buffer->HideCursor(); 
 	buffer->NotHighLightConsole();
 	
@@ -26,12 +24,12 @@ int main()
     game_space.Add("#######      ######");
     game_space.Add("#     #           #");
     game_space.Add("#  ####           #");
-    game_space.Add("#                 #");
+    game_space.Add("#           o     #");
     game_space.Add("#                 #");
     game_space.Add("###################");
     
     Map map(game_space);
-    Entity* player = new Player(2.0f, 12.0f, 0.0f, 60.0f, 1.5f, 47.0f, 1.5f, 30.0f, 0.25f, 2.0f, map);
+    Entity* player = new Player(10.5f, 10.0f, 0.0f, 60.0f, 1.5f, 23.0f, 1.5f, 30.0f, 0.25f, 2.0f, map);
     
     FPS _fps;
     
