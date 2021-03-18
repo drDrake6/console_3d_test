@@ -50,68 +50,39 @@ ConsoleBufferString::~ConsoleBufferString()
 	}
 }
 
-void ConsoleBufferString::PrintVerticalLine(char symbol, float ray_size, int current_rays_amount, bool Is_wallblock_conor)
+void ConsoleBufferString::PrintVerticalLine(VerticalLine vertical_line)
 {
-	int hjghest_y = (float)(_console_height / 2.0f) - (float)_console_height / ray_size;
-	int lowest_y = _console_height - hjghest_y;
-
-	if (symbol == '#')
+	if (vertical_line._symbol == '#')
 	{
+		
+	}
+	/*else if (vertical_line._symbol == 'o')
+	{
+
+
+		float radius = (_console_height / 2) * 0.3f;
+		float center = (float)(trunc(vertical_line._position_ray_x)) + 0.5f;
+		float x = vertical_line._position_ray_x + (abs(center - vertical_line._position_ray_x) * radius) / 0.3;
+
+		float r_sqare = pow(radius, 2);
+		float x_sqare = pow((x - center), 2);
+		int height = ceil(2 * sqrt(r_sqare - x_sqare));
+
+		int highest_y = (float)(_console_height / 2.0f) - (float)height / vertical_line._ray_size;
+		int lowest_y = _console_height - highest_y;
+
 		for (int j = 0; j < _console_height; j++)
 		{
-			if (j < hjghest_y)
-				screen[j * _console_width + current_rays_amount] = ' ';
-			else if (j >= hjghest_y && j <= lowest_y)
-			{
-				if (Is_wallblock_conor)
-				{
-					screen[j * _console_width + current_rays_amount] = ' ';
-				}
-				else
-				{
-					if (ray_size >= 18)
-					{
-						screen[j * _console_width + current_rays_amount] = 9617;
-					}
-					else if (ray_size < 18 && ray_size >= 12)
-					{
-						screen[j * _console_width + current_rays_amount] = 9618;
-					}
-					else if (ray_size < 12 && ray_size >= 6)
-					{
-						screen[j * _console_width + current_rays_amount] = 9619;
-					}
-					else if (ray_size < 6)
-					{
-						screen[j * _console_width + current_rays_amount] = 9608;
-					}
-				}
-			}
-
-			else if (j > lowest_y)
-			{
-				if (j <= _console_height / 2.0f + (_console_height / 8.0f))
-				{
-					screen[j * _console_width + current_rays_amount] = '.';
-				}
-				else if (j > _console_height / 2.0f + (_console_height / 8.0f)
-					&& j <= _console_height / 2.0f + (_console_height / 8.0f) * 2)
-				{
-					screen[j * _console_width + current_rays_amount] = ':';
-				}
-				else if (j > _console_height / 2.0f + (_console_height / 8.0f) * 2
-					&& j <= _console_height / 2.0f + (_console_height / 8.0f) * 3)
-				{
-					screen[j * _console_width + current_rays_amount] = '?';
-				}
-				else if (j > _console_height / 2.0f + (_console_height / 8.0f) * 3
-					&& j <= _console_height)
-				{
-					screen[j * _console_width + current_rays_amount] = '#';
-				}
+			if (j >= highest_y && j <= lowest_y)
+			{				
+				//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 71);
+				screen[j * _console_width + vertical_line._current_rays_amount] = (wchar_t)vertical_line._symbol;
+				#ifdef DEBUG
+					WriteConsoleOutputCharacter(hConsole, screen, _size, FirstCell, &dwBytesWritten);
+				#endif
 			}
 		}
-	}
+	}*/
 }
 
 void ConsoleBufferString::HideCursor()
@@ -201,7 +172,7 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 	float conor_per_ray = player->GetConorOfView() / _console_width;
 	float current_conor = player->GetView_Position();
 	float Point_On_RayX;
-	float Point_On_RayY;
+	float Point_On_RayY;	
 
 	for (int i = _console_width - 1; i >= 0; i--)
 	{
@@ -220,39 +191,61 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 			Point_On_RayX = player->GetPosition_X() + ray_size * conor_cos;
 			Point_On_RayY = player->GetPosition_Y() + ray_size * conor_sin;
 
-			if (map[(short)Point_On_RayX][(short)Point_On_RayY] != ' ')
+			if (map[(short)Point_On_RayX][(short)Point_On_RayY] != ' '
+				//&& map[(short)Point_On_RayX][(short)Point_On_RayY] != previous_symbol
+				)
 			{
-				vector<pair<float, float>> p;
-				for (int wall_conor_y = 0; wall_conor_y < 2; wall_conor_y++)
+				//previous_symbol = map[(short)Point_On_RayX][(short)Point_On_RayY];
+
+				if (map[(short)Point_On_RayX][(short)Point_On_RayY] != '#')
 				{
-					for (int wall_conor_x = 0; wall_conor_x < 2; wall_conor_x++)
-					{
-						float vect_y = (int)Point_On_RayY + wall_conor_y - player->GetPosition_Y();
-						float vect_x = (int)Point_On_RayX + wall_conor_x - player->GetPosition_X();
-
-						float current_rayX = Point_On_RayX - player->GetPosition_X();
-						float current_rayY = Point_On_RayY - player->GetPosition_Y();
-
-						float module = sqrt(pow(vect_x, 2) + pow(vect_y, 2));
-
-						float scalar_product = current_rayY * vect_y + current_rayX * vect_x;
-						float modules_product = module * ray_size;
-						float current_cos = scalar_product / modules_product;
-						p.push_back(make_pair(module, current_cos));
-					}
+					DetectedObjects.push({ map[(short)Point_On_RayX][(short)Point_On_RayY],
+						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor });
 				}
 
-				sort(p.begin(), p.end());
+				if (map[(short)Point_On_RayX][(short)Point_On_RayY] == '#')
+				{
+					vector<pair<float, float>> p;
+					for (int wall_conor_y = 0; wall_conor_y < 2; wall_conor_y++)
+					{
+						for (int wall_conor_x = 0; wall_conor_x < 2; wall_conor_x++)
+						{
+							float vect_y = (int)Point_On_RayY + wall_conor_y - player->GetPosition_Y();
+							float vect_x = (int)Point_On_RayX + wall_conor_x - player->GetPosition_X();
 
-				if (acos(p.at(0).second) <= conor_per_ray / 2)
-					Is_wallblock_conor = true;
-				if (acos(p.at(1).second) <= conor_per_ray / 2)
-					Is_wallblock_conor = true;
-				if (acos(p.at(2).second) <= conor_per_ray / 2)
-					Is_wallblock_conor = true;
+							float current_rayX = Point_On_RayX - player->GetPosition_X();
+							float current_rayY = Point_On_RayY - player->GetPosition_Y();
 
-				PrintVerticalLine(map[(short)Point_On_RayX][(short)Point_On_RayY], ray_size, i, Is_wallblock_conor);
-				break;
+							float module = sqrt(pow(vect_x, 2) + pow(vect_y, 2));
+
+							float scalar_product = current_rayY * vect_y + current_rayX * vect_x;
+							float modules_product = module * ray_size;
+							float current_cos = scalar_product / modules_product;
+							p.push_back(make_pair(module, current_cos));
+						}
+					}
+
+
+					sort(p.begin(), p.end());
+
+					if (acos(p.at(0).second) < conor_per_ray / 2)
+						Is_wallblock_conor = true;
+					if (acos(p.at(1).second) < conor_per_ray / 2)
+						Is_wallblock_conor = true;
+					if (acos(p.at(2).second) < conor_per_ray / 2)
+						Is_wallblock_conor = true;
+
+					VerticalLine({ map[(short)Point_On_RayX][(short)Point_On_RayY],
+						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor }).PrintWall();
+
+					while (!DetectedObjects.empty())
+					{						
+						DetectedObjects.top().PrintCircle();
+						DetectedObjects.pop();
+					}
+
+					break;
+				}				
 			}
 		}
 		if (current_conor + conor_per_ray >= 360)
@@ -265,14 +258,17 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 		}
 	}
 
+
 	PrintDebugInfo(player, map, _fps);
 
+#ifndef DEBUG
 	WriteInBuffer();
+#endif
 }
 
 void ConsoleBufferString::PrintDebugInfo(Entity* player, Map& map, FPS& _fps)
 {
-	swprintf_s(screen, 40, L"X=%3.2f, Y=%3.2f, PV=%3d, FPS=%2.2f", 
+	swprintf_s(screen, 42, L"X=%3.2f, Y=%3.2f, PV=%3d, FPS=%2.2f", 
 		player->GetPosition_X(), player->GetPosition_Y(), 
 		(int)abs(((player->GetView_Position() * 180.0f) / 3.14f)) % 360, 
 		1.0f / _fps.GetFPS());
