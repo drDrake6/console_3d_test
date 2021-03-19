@@ -4,7 +4,7 @@ int main()
 {
 	system("mode con cols=120 lines=40");
 
-	ConsoleBufferString* buffer = ConsoleBufferString::Instance(_WINDOW_);
+	ConsoleBufferString* buffer = ConsoleBufferString::Instance(_FULL_SCREAN_);
 	buffer->HideCursor(); 
 	buffer->NotHighLightConsole();
 	
@@ -12,11 +12,11 @@ int main()
     
     game_space.Add("###################");
     game_space.Add("#                 #");
+    game_space.Add("# o               #");
     game_space.Add("#                 #");
     game_space.Add("#                 #");
-    game_space.Add("#                 #");
-    game_space.Add("#        ##       #");
-    game_space.Add("#        ##       #");
+    game_space.Add("#  o     ##       #");
+    game_space.Add("#       o##       #");
     game_space.Add("#                 #");
     game_space.Add("#                 #");
     game_space.Add("#          ########");
