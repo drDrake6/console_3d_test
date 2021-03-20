@@ -7,6 +7,7 @@
 #include <chrono>
 #include <vector>
 #include <stack>
+#include <map>
 using namespace std;
 
 #include "FPS.h"
@@ -15,7 +16,7 @@ using namespace std;
 #include "GameObject.h"
 #include "Item.h"
 #include "Entity.h"
+#include "GameSpace.h"
+#include "Circle.h"
 #include "Player.h"
 #include "ConsoleBufferString.h"
-
-//#define DEBUG

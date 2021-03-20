@@ -1,8 +1,8 @@
 #include "Headers.h"
 
-Player::Player(float x, float y, float collision_radius, float conor_of_view, float view_position_increment,
+Player::Player(float x, float y, float collision_radius, float render_area, float conor_of_view, float view_position_increment,
 float view_position, float rotation_speed, float walk_speed, float deceleration, float exeleration, Map& map) :
-Entity(x, y, collision_radius, conor_of_view, view_position_increment, view_position, rotation_speed,
+Entity(x, y, collision_radius, render_area, conor_of_view, view_position_increment, view_position, rotation_speed,
 	walk_speed, deceleration, exeleration, map)
 {	
 }
@@ -20,7 +20,7 @@ bool Player::Controle(Map& map, FPS& _fps)
 		walk_speed = _walk_speed;
 	}
 
-	float collision_radius = _collision_radius;
+	float collision_radius = _collision_distance;
 	
 
 	float current_view_conor = _conor_of_view / 2 + _view_position;

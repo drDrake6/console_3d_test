@@ -139,29 +139,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Collision_checker.cpp" />
     <ClCompile Include="ConsoleBufferString.cpp" />
     <ClCompile Include="console_3d_test.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameSpace.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="Collision_checker.h" />
     <ClInclude Include="ConsoleBufferString.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameSpace.h" />
     <ClInclude Include="Headers.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

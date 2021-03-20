@@ -1,9 +1,9 @@
 #include "Headers.h"
 
-Entity::Entity(float x, float y, float collision_radius, float conor_of_view,
-	float view_position_increment, float view_position, float rotation_speed,
-	float walk_speed, float deceleration, float exeleration, Map& map) 
-	: GameObject(x, y, map, collision_radius)
+Entity::Entity(float x, float y, float collision_distanse, float render_area, 
+	float conor_of_view, float view_position_increment, float view_position, 
+	float rotation_speed, float walk_speed, float deceleration, float exeleration, 
+	Map& map) : GameObject(x, y, map, collision_distanse, render_area)
 {
 	SetConorOfView(conor_of_view);
 	SetViewPositionIncrement(view_position_increment);

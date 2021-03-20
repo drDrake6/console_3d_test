@@ -50,130 +50,6 @@ ConsoleBufferString::~ConsoleBufferString()
 	}
 }
 
-void ConsoleBufferString::PrintVerticalLine(VerticalLine vertical_line)
-{
-	if (vertical_line._symbol == '#')
-<<<<<<< HEAD
-	{
-		
-	}
-	/*else if (vertical_line._symbol == 'o')
-	{
-
-
-		float radius = (_console_height / 2) * 0.3f;
-		float center = (float)(trunc(vertical_line._position_ray_x)) + 0.5f;
-		float x = vertical_line._position_ray_x + (abs(center - vertical_line._position_ray_x) * radius) / 0.3;
-
-		float r_sqare = pow(radius, 2);
-		float x_sqare = pow((x - center), 2);
-		int height = ceil(2 * sqrt(r_sqare - x_sqare));
-
-		int highest_y = (float)(_console_height / 2.0f) - (float)height / vertical_line._ray_size;
-=======
-	{
-		previous_symbol = '!';
-
-		int highest_y = (float)(_console_height / 2.0f) 
-			- (float)_console_height / vertical_line._ray_size;
->>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
-		int lowest_y = _console_height - highest_y;
-
-		for (int j = 0; j < _console_height; j++)
-		{
-<<<<<<< HEAD
-			if (j >= highest_y && j <= lowest_y)
-			{				
-				//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 71);
-				screen[j * _console_width + vertical_line._current_rays_amount] = (wchar_t)vertical_line._symbol;
-				#ifdef DEBUG
-					WriteConsoleOutputCharacter(hConsole, screen, _size, FirstCell, &dwBytesWritten);
-				#endif
-			}
-		}
-	}*/
-=======
-			if (j < highest_y)
-				screen[j * _console_width + vertical_line._current_rays_amount] = ' ';
-			else if (j >= highest_y && j <= lowest_y)
-			{
-				if (vertical_line._Is_wallblock_conor)
-				{
-					screen[j * _console_width + vertical_line._current_rays_amount] = ' ';
-				}
-				else
-				{
-					if (vertical_line._ray_size >= 18)
-					{
-						screen[j * _console_width + vertical_line._current_rays_amount] = 9617;
-					}
-					else if (vertical_line._ray_size < 18 && vertical_line._ray_size >= 12)
-					{
-						screen[j * _console_width + vertical_line._current_rays_amount] = 9618;
-					}
-					else if (vertical_line._ray_size < 12 && vertical_line._ray_size >= 6)
-					{
-						screen[j * _console_width + vertical_line._current_rays_amount] = 9619;
-					}
-					else if (vertical_line._ray_size < 6)
-					{
-						screen[j * _console_width + vertical_line._current_rays_amount] = 9608;
-					}
-				}
-			}
-
-			else if (j > lowest_y)
-			{
-				if (j <= _console_height / 2.0f + (_console_height / 8.0f))
-				{
-					screen[j * _console_width + vertical_line._current_rays_amount] = '.';
-				}
-				else if (j > _console_height / 2.0f + (_console_height / 8.0f)
-					&& j <= _console_height / 2.0f + (_console_height / 8.0f) * 2)
-				{
-					screen[j * _console_width + vertical_line._current_rays_amount] = ':';
-				}
-				else if (j > _console_height / 2.0f + (_console_height / 8.0f) * 2
-					&& j <= _console_height / 2.0f + (_console_height / 8.0f) * 3)
-				{
-					screen[j * _console_width + vertical_line._current_rays_amount] = '?';
-				}
-				else if (j > _console_height / 2.0f + (_console_height / 8.0f) * 3
-					&& j <= _console_height)
-				{
-					screen[j * _console_width + vertical_line._current_rays_amount] = '#';
-				}
-			}
-		}
-	}
-	else if (vertical_line._symbol == 'o')
-	{
-		float radius = (_console_height / 2) * 0.6;
-		float center = (float)(trunc(vertical_line._position_ray_x)) + 0.5f;
-		float x = vertical_line._position_ray_x + (abs(center - vertical_line._position_ray_x) * radius) / 0.5;
-
-		float r_sqare = pow((_console_height / 2) * 0.6, 2);
-		float x_sqare = pow((x - center), 2);
-		int height = ceil(2 * sqrt(r_sqare - x_sqare));
-
-		int highest_y = (float)(_console_height / 2.0f) - (float)height / vertical_line._ray_size;
-		int lowest_y = _console_height - highest_y;
-
-		for (int j = 0; j < _console_height; j++)
-		{
-			if (j >= highest_y && j <= lowest_y)
-			{				
-				//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 71);
-				screen[j * _console_width + vertical_line._current_rays_amount] = (wchar_t)vertical_line._symbol;
-				#ifdef DEBUG
-					WriteConsoleOutputCharacter(hConsole, screen, _size, FirstCell, &dwBytesWritten);
-				#endif
-			}
-		}
-	}
->>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
-}
-
 void ConsoleBufferString::HideCursor()
 {
 	CONSOLE_CURSOR_INFO info;
@@ -256,12 +132,12 @@ void ConsoleBufferString::SetConsoleBufferMode()
 	hConsole = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL); // Буфер экрана
 }
 
-void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
+void ConsoleBufferString::Render(Map& map, Item& item, Entity& player, FPS& _fps)
 {
-	float conor_per_ray = player->GetConorOfView() / _console_width;
-	float current_conor = player->GetView_Position();
+	float conor_per_ray = player.GetConorOfView() / _console_width;
+	float current_conor = player.GetView_Position();
 	float Point_On_RayX;
-	float Point_On_RayY;	
+	float Point_On_RayY;
 
 	for (int i = _console_width - 1; i >= 0; i--)
 	{
@@ -275,49 +151,51 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 
 		for (float ray_size = 0;;)
 		{
-			ray_size += 0.1f;					
+			ray_size += 0.1f;
 
-			Point_On_RayX = player->GetPosition_X() + ray_size * conor_cos;
-			Point_On_RayY = player->GetPosition_Y() + ray_size * conor_sin;
+			Point_On_RayX = player.GetPosition_X() + ray_size * conor_cos;
+			Point_On_RayY = player.GetPosition_Y() + ray_size * conor_sin;
 
 			if (map[(short)Point_On_RayX][(short)Point_On_RayY] != ' '
-<<<<<<< HEAD
 				//&& map[(short)Point_On_RayX][(short)Point_On_RayY] != previous_symbol
 				)
-=======
-				/*&& map[(short)Point_On_RayX][(short)Point_On_RayY] != previous_symbol*/)
->>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
 			{
 				//previous_symbol = map[(short)Point_On_RayX][(short)Point_On_RayY];
 
 				if (map[(short)Point_On_RayX][(short)Point_On_RayY] != '#')
-<<<<<<< HEAD
 				{
-					DetectedObjects.push({ map[(short)Point_On_RayX][(short)Point_On_RayY],
-						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor });
+					float x = item.GetPosition_X();
+					float y = item.GetPosition_Y();
+					/*float radius = item.GetCollision_distanse();
+
+					float x_square = pow(Point_On_RayX - x, 2);
+					float y_square = pow(Point_On_RayY - y, 2);
+					float radius_square = pow(radius, 2);
+
+					float left = x_square + y_square;*/
+
+					if (Point_On_RayX >= x - item.GetRender_area() &&
+						Point_On_RayX <= x + item.GetRender_area() &&
+						Point_On_RayY >= y - item.GetWidth() &&
+						Point_On_RayY <= y + item.GetWidth())
+					{
+						DetectedObjects.push({ map[(short)Point_On_RayX][(short)Point_On_RayY],
+						Point_On_RayX, Point_On_RayY, ray_size, i, Is_wallblock_conor });
+					}					
 				}
 
 				if (map[(short)Point_On_RayX][(short)Point_On_RayY] == '#')
 				{
-=======
-				{
-					DetectedObjects.push({ map[(short)Point_On_RayX][(short)Point_On_RayY],
-						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor });
-				}
-
-				if (map[(short)Point_On_RayX][(short)Point_On_RayY] == '#')
-				{
->>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
 					vector<pair<float, float>> p;
 					for (int wall_conor_y = 0; wall_conor_y < 2; wall_conor_y++)
 					{
 						for (int wall_conor_x = 0; wall_conor_x < 2; wall_conor_x++)
 						{
-							float vect_y = (int)Point_On_RayY + wall_conor_y - player->GetPosition_Y();
-							float vect_x = (int)Point_On_RayX + wall_conor_x - player->GetPosition_X();
+							float vect_y = (int)Point_On_RayY + wall_conor_y - player.GetPosition_Y();
+							float vect_x = (int)Point_On_RayX + wall_conor_x - player.GetPosition_X();
 
-							float current_rayX = Point_On_RayX - player->GetPosition_X();
-							float current_rayY = Point_On_RayY - player->GetPosition_Y();
+							float current_rayX = Point_On_RayX - player.GetPosition_X();
+							float current_rayY = Point_On_RayY - player.GetPosition_Y();
 
 							float module = sqrt(pow(vect_x, 2) + pow(vect_y, 2));
 
@@ -328,9 +206,7 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 						}
 					}
 
-
 					sort(p.begin(), p.end());
-<<<<<<< HEAD
 
 					if (acos(p.at(0).second) < conor_per_ray / 2)
 						Is_wallblock_conor = true;
@@ -343,30 +219,15 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor }).PrintWall();
 
 					while (!DetectedObjects.empty())
-					{						
-						DetectedObjects.top().PrintCircle();
-=======
-
-					if (acos(p.at(0).second) < conor_per_ray / 2)
-						Is_wallblock_conor = true;
-					if (acos(p.at(1).second) < conor_per_ray / 2)
-						Is_wallblock_conor = true;
-					if (acos(p.at(2).second) < conor_per_ray / 2)
-						Is_wallblock_conor = true;
-
-					PrintVerticalLine({ map[(short)Point_On_RayX][(short)Point_On_RayY],
-						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor });
-
-					while (!DetectedObjects.empty())
 					{
-						PrintVerticalLine(DetectedObjects.top());
->>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
+						DetectedObjects.top().PrintCircle();
 						DetectedObjects.pop();
 					}
 
 					break;
-				}				
+				}
 			}
+			
 		}
 		if (current_conor + conor_per_ray >= 360)
 		{
@@ -375,22 +236,21 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 		else
 		{
 			current_conor += conor_per_ray;
-		}
+		}		
 	}
 
-
-	PrintDebugInfo(player, map, _fps);
+		PrintDebugInfo(player, map, _fps);
 
 #ifndef DEBUG
-	WriteInBuffer();
+		WriteInBuffer();
 #endif
 }
 
-void ConsoleBufferString::PrintDebugInfo(Entity* player, Map& map, FPS& _fps)
+void ConsoleBufferString::PrintDebugInfo(Entity& player, Map& map, FPS& _fps)
 {
 	swprintf_s(screen, 42, L"X=%3.2f, Y=%3.2f, PV=%3d, FPS=%2.2f", 
-		player->GetPosition_X(), player->GetPosition_Y(), 
-		(int)abs(((player->GetView_Position() * 180.0f) / 3.14f)) % 360, 
+		player.GetPosition_X(), player.GetPosition_Y(), 
+		(int)abs(((player.GetView_Position() * 180.0f) / 3.14f)) % 360, 
 		1.0f / _fps.GetFPS());
 
 	for (int nx = 0; nx < map.GetHeight(); nx++)
@@ -398,7 +258,7 @@ void ConsoleBufferString::PrintDebugInfo(Entity* player, Map& map, FPS& _fps)
 		{
 			screen[(nx + 1) * _console_width + ny] = map[nx][ny];
 		}
-	screen[((int)(player->GetPosition_X()) + 1) * _console_width + (int)(player->GetPosition_Y())] = 'P';
+	screen[((int)(player.GetPosition_X()) + 1) * _console_width + (int)(player.GetPosition_Y())] = 'P';
 
 	screen[_size - 1] = '\0';
 }

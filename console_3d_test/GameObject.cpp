@@ -1,19 +1,21 @@
 #include "Headers.h"
 
-const float GameObject::max_collision_radius = 0.74f;
+const float GameObject::max_collision_distance = 0.49f;
+const float GameObject::max_render_area = 0.49f;
 const float GameObject::pi = 3.1415926f;
 
-GameObject::GameObject(float x, float y, const Map& map, float collision_radius)
+GameObject::GameObject(float x, float y, const Map& map, float collision_area, float render_area)
 {
 	SetPosition (x, y, map);
-	SetCollision_radius(collision_radius);
+	SetCollision_distanse(collision_area);
+	SetRender_area(render_area);
 }
 
 void GameObject::SetPosition(float x, float y, const Map& map)
 {
 	if (x > 0 && x < map.GetHeight() &&
 		y > 0 && y < map.GetWidth() &&
-		map[x][y] == ' ')
+		map[x][y] != '#')
 	{
 		_positionX = x;
 		_positionY = y;
@@ -25,15 +27,27 @@ void GameObject::SetPosition(float x, float y, const Map& map)
 	}
 }
 
-void GameObject::SetCollision_radius(float collision_radius)
+void GameObject::SetCollision_distanse(float collision_area)
 {
-	if (collision_radius > 0 && collision_radius <= max_collision_radius)
+	if (collision_area > 0 && collision_area <= max_collision_distance)
 	{
-		_collision_radius = collision_radius;
+		_collision_distance = collision_area;
 	}
 	else
 	{
-		_collision_radius = 0.475f;
+		_collision_distance = 0.475f;
+	}
+}
+
+void GameObject::SetRender_area(float render_area)
+{
+	if (render_area > 0 && render_area <= max_render_area)
+	{
+		_render_area = render_area;
+	}
+	else
+	{
+		_render_area = 0.475f;
 	}
 }
 
@@ -47,7 +61,12 @@ float GameObject::GetPosition_Y() const
 	return _positionY;
 }
 
-float GameObject::GetCollision_radius() const
+float GameObject::GetCollision_distanse() const
 {
-	return _collision_radius;
+	return _collision_distance;
+}
+
+float GameObject::GetRender_area() const
+{
+	return _render_area;
 }

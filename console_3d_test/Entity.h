@@ -11,7 +11,7 @@ protected:
 	float _exeleration;
 public:
 
-	Entity(float x, float y, float collision_radius, float conor_of_view, float view_position_increment,
+	Entity(float x, float y, float collision_distanse, float render_area, float conor_of_view, float view_position_increment,
 		float view_position, float rotation_speed, float walk_speed, float deceleration, float exeleration, Map& map);
 	void SetConorOfView(float conor_of_view);
 	void SetViewPositionIncrement(float view_position_increment);

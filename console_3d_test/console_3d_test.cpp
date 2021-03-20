@@ -4,47 +4,44 @@ int main()
 {
 	system("mode con cols=120 lines=40");
 
-	ConsoleBufferString* buffer = ConsoleBufferString::Instance(_FULL_SCREAN_);
+	ConsoleBufferString* buffer = ConsoleBufferString::Instance(_WINDOW_);
 	buffer->HideCursor(); 
 	buffer->NotHighLightConsole();
 	
     Set<string> game_space;
     
+
     game_space.Add("###################");
     game_space.Add("#                 #");
-    game_space.Add("# o               #");
     game_space.Add("#                 #");
-    game_space.Add("#o          o     #");
     game_space.Add("#                 #");
-<<<<<<< HEAD
-    game_space.Add("# o      ##       #");
     game_space.Add("#        ##       #");
-    game_space.Add("# o               #");
-=======
-    game_space.Add("#  o     ##       #");
-    game_space.Add("#       o##       #");
+    game_space.Add("#        ##       #");
+    game_space.Add("#        o        #");
     game_space.Add("#                 #");
->>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
-    game_space.Add("#                 #");
-    game_space.Add("# o         #######");
+    game_space.Add("#           #######");
     game_space.Add("#                 #");
     game_space.Add("#######      ######");
     game_space.Add("#     #           #");
     game_space.Add("#  ####           #");
-    game_space.Add("#           o     #");
+    game_space.Add("#                 #");
     game_space.Add("#                 #");
     game_space.Add("###################");
     
     Map map(game_space);
-    Entity* player = new Player(10.5f, 10.0f, 0.0f, 60.0f, 1.5f, 23.0f, 1.5f, 30.0f, 0.25f, 2.0f, map);
-    
+    Player _player(4.74f, 3.44f, 0.0f, 0.0f, 60.0f, 1.5f, 345.0f, 1.5f, 30.0f, 0.25f, 2.0f, map);
+    Entity& player = _player;
+
+    Circle _item(6.5f, 9.5f, map, 0.5f, 0.5f);
+    Item& item = _item;
+
     FPS _fps;
     
     while (true)
     {
 	    _fps.current_Calc_Period();
-	    buffer->Render(map, player, _fps);
-	    if (!player->Controle(map, _fps)) break;
+	    buffer->Render(map, item, player, _fps);
+	    if (!player.Controle(map, _fps)) break;
     }
     
     _getch();

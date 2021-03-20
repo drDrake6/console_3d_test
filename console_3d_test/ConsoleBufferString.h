@@ -1,5 +1,6 @@
 #pragma once
 
+//#define DEBUG
 #define _FULL_SCREAN_ 1
 #define _WINDOW_ 0
 
@@ -42,7 +43,6 @@ class ConsoleBufferString
 			_Is_wallblock_conor = Is_wallblock_conor;
 		}
 
-<<<<<<< HEAD
 		void PrintCircle()
 		{
 			float radius = (_self->_console_height / 2) * 0.3f;
@@ -60,10 +60,9 @@ class ConsoleBufferString
 			{
 				if (j >= highest_y && j <= lowest_y)
 				{
-					//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 71);
 					_self->screen[j * _self->_console_width + _current_rays_amount] = (wchar_t)_symbol;
 					#ifdef DEBUG
-					WriteConsoleOutputCharacter(hConsole, screen, _size, FirstCell, &dwBytesWritten);
+					WriteConsoleOutputCharacter(_self->hConsole, _self->screen, _self->_size, _self->FirstCell, &(_self->dwBytesWritten));
 					#endif
 				}
 			}
@@ -132,105 +131,11 @@ class ConsoleBufferString
 				}
 			}
 		}
-
-=======
-		/*friend void PrintVerticalLine()
-		{
-			if (_symbol == '#')
-			{
-				//previous_symbol = '!';
-
-				int highest_y = (float)(ConsoleBufferString::_console_height / 2.0f)
-					- (float)_console_height / _ray_size;
-				int lowest_y = _console_height - highest_y;
-
-				for (int j = 0; j < _console_height; j++)
-				{
-					if (j < highest_y)
-						screen[j * _console_width + _current_rays_amount] = ' ';
-					else if (j >= highest_y && j <= lowest_y)
-					{
-						if (_Is_wallblock_conor)
-						{
-							screen[j * _console_width +  _current_rays_amount] = ' ';
-						}
-						else
-						{
-							if (_ray_size >= 18)
-							{
-								screen[j * _console_width + _current_rays_amount] = 9617;
-							}
-							else if (_ray_size < 18 && _ray_size >= 12)
-							{
-								screen[j * _console_width + _current_rays_amount] = 9618;
-							}
-							else if (_ray_size < 12 && _ray_size >= 6)
-							{
-								screen[j * _console_width + _current_rays_amount] = 9619;
-							}
-							else if (_ray_size < 6)
-							{
-								screen[j * _console_width + _current_rays_amount] = 9608;
-							}
-						}
-					}
-
-					else if (j > lowest_y)
-					{
-						if (j <= _console_height / 2.0f + (_console_height / 8.0f))
-						{
-							screen[j * _console_width +  _current_rays_amount] = '.';
-						}
-						else if (j > _console_height / 2.0f + (_console_height / 8.0f)
-							&& j <= _console_height / 2.0f + (_console_height / 8.0f) * 2)
-						{
-							screen[j * _console_width +  _current_rays_amount] = ':';
-						}
-						else if (j > _console_height / 2.0f + (_console_height / 8.0f) * 2
-							&& j <= _console_height / 2.0f + (_console_height / 8.0f) * 3)
-						{
-							screen[j * _console_width +  _current_rays_amount] = '?';
-						}
-						else if (j > _console_height / 2.0f + (_console_height / 8.0f) * 3
-							&& j <= _console_height)
-						{
-							screen[j * _console_width +  _current_rays_amount] = '#';
-						}
-					}
-				}
-			}
-			else if ( _symbol == 'o')
-			{
-				float radius = (_console_height / 2) * 0.6;
-				float center = (float)(trunc( _position_ray_x)) + 0.5f;
-				float x =  _position_ray_x + (abs(center -  _position_ray_x) * radius) / 0.5;
-
-				float r_sqare = pow((_console_height / 2) * 0.6, 2);
-				float x_sqare = pow((x - center), 2);
-				int height = ceil(2 * sqrt(r_sqare - x_sqare));
-
-				int highest_y = (float)(_console_height / 2.0f) - (float)height /  _ray_size;
-				int lowest_y = _console_height - highest_y;
-
-				for (int j = 0; j < _console_height; j++)
-				{
-					if (j >= highest_y && j <= lowest_y)
-					{
-						//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 71);
-						screen[j * _console_width +  _current_rays_amount] = (wchar_t) _symbol;
-#ifdef DEBUG
-						WriteConsoleOutputCharacter(hConsole, screen, _size, FirstCell, &dwBytesWritten);
-#endif
-					}
-				}
-			}
-		}*/
->>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
 	};
 
 	stack<VerticalLine> DetectedObjects;
 
-	void PrintVerticalLine(VerticalLine vertical_line);
+	//void PrintVerticalLine(VerticalLine vertical_line);
 
 public:
 	void HideCursor();
@@ -245,6 +150,6 @@ public:
 	void WriteInBuffer();
 	static bool DeleteInstance();
 	void SetConsoleBufferMode();
-	void Render(Map& map, Entity* player, FPS& _fps);
-	void PrintDebugInfo(Entity* player, Map& map, FPS& _fps);
+	void Render(Map& map, Item& item, Entity& player, FPS& _fps);
+	void PrintDebugInfo(Entity& player, Map& map, FPS& _fps);
 };

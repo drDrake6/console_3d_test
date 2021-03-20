@@ -2,10 +2,15 @@
 class Item : public GameObject
 {
 protected:
-	char symbol;
+	char _symbol;
+	float width = 0.05f;
 
 public:
-	virtual void PrintLineOfObject(float Ray_size, int current_rays_amount) = 0;
+	Item(char symbol, float positionX, float positionY, const Map& map, 
+		float collision_area, float render_area);
+
+	char GetSymbol() const;
+	float GetWidth() const;
 	virtual ~Item() = 0 {};
 };
 
