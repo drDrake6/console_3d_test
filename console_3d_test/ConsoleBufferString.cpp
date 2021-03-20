@@ -53,6 +53,7 @@ ConsoleBufferString::~ConsoleBufferString()
 void ConsoleBufferString::PrintVerticalLine(VerticalLine vertical_line)
 {
 	if (vertical_line._symbol == '#')
+<<<<<<< HEAD
 	{
 		
 	}
@@ -65,6 +66,93 @@ void ConsoleBufferString::PrintVerticalLine(VerticalLine vertical_line)
 		float x = vertical_line._position_ray_x + (abs(center - vertical_line._position_ray_x) * radius) / 0.3;
 
 		float r_sqare = pow(radius, 2);
+		float x_sqare = pow((x - center), 2);
+		int height = ceil(2 * sqrt(r_sqare - x_sqare));
+
+		int highest_y = (float)(_console_height / 2.0f) - (float)height / vertical_line._ray_size;
+=======
+	{
+		previous_symbol = '!';
+
+		int highest_y = (float)(_console_height / 2.0f) 
+			- (float)_console_height / vertical_line._ray_size;
+>>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
+		int lowest_y = _console_height - highest_y;
+
+		for (int j = 0; j < _console_height; j++)
+		{
+<<<<<<< HEAD
+			if (j >= highest_y && j <= lowest_y)
+			{				
+				//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 71);
+				screen[j * _console_width + vertical_line._current_rays_amount] = (wchar_t)vertical_line._symbol;
+				#ifdef DEBUG
+					WriteConsoleOutputCharacter(hConsole, screen, _size, FirstCell, &dwBytesWritten);
+				#endif
+			}
+		}
+	}*/
+=======
+			if (j < highest_y)
+				screen[j * _console_width + vertical_line._current_rays_amount] = ' ';
+			else if (j >= highest_y && j <= lowest_y)
+			{
+				if (vertical_line._Is_wallblock_conor)
+				{
+					screen[j * _console_width + vertical_line._current_rays_amount] = ' ';
+				}
+				else
+				{
+					if (vertical_line._ray_size >= 18)
+					{
+						screen[j * _console_width + vertical_line._current_rays_amount] = 9617;
+					}
+					else if (vertical_line._ray_size < 18 && vertical_line._ray_size >= 12)
+					{
+						screen[j * _console_width + vertical_line._current_rays_amount] = 9618;
+					}
+					else if (vertical_line._ray_size < 12 && vertical_line._ray_size >= 6)
+					{
+						screen[j * _console_width + vertical_line._current_rays_amount] = 9619;
+					}
+					else if (vertical_line._ray_size < 6)
+					{
+						screen[j * _console_width + vertical_line._current_rays_amount] = 9608;
+					}
+				}
+			}
+
+			else if (j > lowest_y)
+			{
+				if (j <= _console_height / 2.0f + (_console_height / 8.0f))
+				{
+					screen[j * _console_width + vertical_line._current_rays_amount] = '.';
+				}
+				else if (j > _console_height / 2.0f + (_console_height / 8.0f)
+					&& j <= _console_height / 2.0f + (_console_height / 8.0f) * 2)
+				{
+					screen[j * _console_width + vertical_line._current_rays_amount] = ':';
+				}
+				else if (j > _console_height / 2.0f + (_console_height / 8.0f) * 2
+					&& j <= _console_height / 2.0f + (_console_height / 8.0f) * 3)
+				{
+					screen[j * _console_width + vertical_line._current_rays_amount] = '?';
+				}
+				else if (j > _console_height / 2.0f + (_console_height / 8.0f) * 3
+					&& j <= _console_height)
+				{
+					screen[j * _console_width + vertical_line._current_rays_amount] = '#';
+				}
+			}
+		}
+	}
+	else if (vertical_line._symbol == 'o')
+	{
+		float radius = (_console_height / 2) * 0.6;
+		float center = (float)(trunc(vertical_line._position_ray_x)) + 0.5f;
+		float x = vertical_line._position_ray_x + (abs(center - vertical_line._position_ray_x) * radius) / 0.5;
+
+		float r_sqare = pow((_console_height / 2) * 0.6, 2);
 		float x_sqare = pow((x - center), 2);
 		int height = ceil(2 * sqrt(r_sqare - x_sqare));
 
@@ -82,7 +170,8 @@ void ConsoleBufferString::PrintVerticalLine(VerticalLine vertical_line)
 				#endif
 			}
 		}
-	}*/
+	}
+>>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
 }
 
 void ConsoleBufferString::HideCursor()
@@ -192,12 +281,17 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 			Point_On_RayY = player->GetPosition_Y() + ray_size * conor_sin;
 
 			if (map[(short)Point_On_RayX][(short)Point_On_RayY] != ' '
+<<<<<<< HEAD
 				//&& map[(short)Point_On_RayX][(short)Point_On_RayY] != previous_symbol
 				)
+=======
+				/*&& map[(short)Point_On_RayX][(short)Point_On_RayY] != previous_symbol*/)
+>>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
 			{
 				//previous_symbol = map[(short)Point_On_RayX][(short)Point_On_RayY];
 
 				if (map[(short)Point_On_RayX][(short)Point_On_RayY] != '#')
+<<<<<<< HEAD
 				{
 					DetectedObjects.push({ map[(short)Point_On_RayX][(short)Point_On_RayY],
 						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor });
@@ -205,6 +299,15 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 
 				if (map[(short)Point_On_RayX][(short)Point_On_RayY] == '#')
 				{
+=======
+				{
+					DetectedObjects.push({ map[(short)Point_On_RayX][(short)Point_On_RayY],
+						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor });
+				}
+
+				if (map[(short)Point_On_RayX][(short)Point_On_RayY] == '#')
+				{
+>>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
 					vector<pair<float, float>> p;
 					for (int wall_conor_y = 0; wall_conor_y < 2; wall_conor_y++)
 					{
@@ -227,6 +330,7 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 
 
 					sort(p.begin(), p.end());
+<<<<<<< HEAD
 
 					if (acos(p.at(0).second) < conor_per_ray / 2)
 						Is_wallblock_conor = true;
@@ -241,6 +345,22 @@ void ConsoleBufferString::Render(Map& map, Entity* player, FPS& _fps)
 					while (!DetectedObjects.empty())
 					{						
 						DetectedObjects.top().PrintCircle();
+=======
+
+					if (acos(p.at(0).second) < conor_per_ray / 2)
+						Is_wallblock_conor = true;
+					if (acos(p.at(1).second) < conor_per_ray / 2)
+						Is_wallblock_conor = true;
+					if (acos(p.at(2).second) < conor_per_ray / 2)
+						Is_wallblock_conor = true;
+
+					PrintVerticalLine({ map[(short)Point_On_RayX][(short)Point_On_RayY],
+						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor });
+
+					while (!DetectedObjects.empty())
+					{
+						PrintVerticalLine(DetectedObjects.top());
+>>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
 						DetectedObjects.pop();
 					}
 

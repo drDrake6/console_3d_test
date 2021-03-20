@@ -12,19 +12,26 @@ int main()
     
     game_space.Add("###################");
     game_space.Add("#                 #");
+    game_space.Add("# o               #");
     game_space.Add("#                 #");
     game_space.Add("#o          o     #");
     game_space.Add("#                 #");
+<<<<<<< HEAD
     game_space.Add("# o      ##       #");
     game_space.Add("#        ##       #");
     game_space.Add("# o               #");
+=======
+    game_space.Add("#  o     ##       #");
+    game_space.Add("#       o##       #");
+    game_space.Add("#                 #");
+>>>>>>> 997164de41340925e3befc560ff39d417c77f8d7
     game_space.Add("#                 #");
     game_space.Add("# o         #######");
     game_space.Add("#                 #");
     game_space.Add("#######      ######");
     game_space.Add("#     #           #");
     game_space.Add("#  ####           #");
-    game_space.Add("#                 #");
+    game_space.Add("#           o     #");
     game_space.Add("#                 #");
     game_space.Add("###################");
     
