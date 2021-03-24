@@ -1,10 +1,15 @@
 #pragma once
+
 class GameSpace
 {
-	map<pair<float, float>, Item&> _items;
+	vector<GameObject*> _objects;
 public:
-	void AddItem(Item& item);
-	Item& FindItem(float x, float y);
-	Item& TakeItem(float x, float y);
+	void AddItem(GameObject* item);
+	GameObject* FindItemByRander(float x, float y) const;
+	int FindItemByCollision(float x, float y) const;
+	GameObject* TakeItem(int index);
+	int GetSize() const;
+	GameObject*& operator[](int index);
+	GameObject* operator[](int index) const;
 };
 

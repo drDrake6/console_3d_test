@@ -3,45 +3,74 @@
 int main()
 {
 	system("mode con cols=120 lines=40");
-
-	ConsoleBufferString* buffer = ConsoleBufferString::Instance(_WINDOW_);
-	buffer->HideCursor(); 
-	buffer->NotHighLightConsole();
 	
     Set<string> game_space;
     
 
-    game_space.Add("###################");
-    game_space.Add("#                 #");
-    game_space.Add("#                 #");
-    game_space.Add("#                 #");
-    game_space.Add("#        ##       #");
-    game_space.Add("#        ##       #");
-    game_space.Add("#        o        #");
-    game_space.Add("#                 #");
-    game_space.Add("#           #######");
-    game_space.Add("#                 #");
-    game_space.Add("#######      ######");
-    game_space.Add("#     #           #");
-    game_space.Add("#  ####           #");
-    game_space.Add("#                 #");
-    game_space.Add("#                 #");
-    game_space.Add("###################");
-    
+    game_space.Add("###################"); //0
+    game_space.Add("#                 #"); //1
+    game_space.Add("#                 #"); //2
+    game_space.Add("#                 #"); //3
+    game_space.Add("#        ##       #"); //4
+    game_space.Add("#        ##       #"); //5
+    game_space.Add("#                 #"); //6
+    game_space.Add("#                 #"); //7
+    game_space.Add("#           #######"); //8
+    game_space.Add("#                 #"); //9
+    game_space.Add("#######      ######"); //10
+    game_space.Add("#     #           #"); //11
+    game_space.Add("#  ####           #"); //12
+    game_space.Add("#                 #"); //13
+    game_space.Add("#                 #"); //14
+    game_space.Add("###################"); //15
+                  //0123456789012345678
+                  //          1
     Map map(game_space);
-    Player _player(4.74f, 3.44f, 0.0f, 0.0f, 60.0f, 1.5f, 345.0f, 1.5f, 30.0f, 0.25f, 2.0f, map);
+    Player _player(4.74f, 3.44f, 0.0f, 0.0f, 60.0f, 1.5f, 345.0f, 1.5f, 30.0f, 0.25f, 2.0f, map, 'P');
     Entity& player = _player;
 
-    Circle _item(6.5f, 9.5f, map, 0.5f, 0.5f);
-    Item& item = _item;
+    GameSpace gameSpace;
+
+    Circle circle;
+    Circle circle2;
+    Circle circle3;
+    Circle circle4;
+    Rect rect;
+
+    try
+    {
+        circle.InitialiseCircle(6.9f, 9.9f, map, 0.5f, 0.5f);
+        gameSpace.AddItem(&circle);
+
+        circle2.InitialiseCircle(2.5f, 14.5f, map, 0.5f, 0.5f);
+        gameSpace.AddItem(&circle2);
+
+        circle3.InitialiseCircle(14.5f, 2.5f, map, 0.5f, 0.5f);
+        gameSpace.AddItem(&circle3);
+
+        circle4.InitialiseCircle(9.5f, 6.5f, map, 0.5f, 0.5f);
+        gameSpace.AddItem(&circle4);
+
+        rect.InitialiseRectangle(13.5f, 13.5f, map, 0.5f, 0.5f);
+        gameSpace.AddItem(&rect);
+    }
+    catch (PositionError& exp)
+    {
+        cout << exp.what() << ", press any key...";
+        _getch();
+    }     
 
     FPS _fps;
+
+    ConsoleBufferString* buffer = ConsoleBufferString::Instance(_FULL_SCREAN_);
+    buffer->HideCursor();
+    buffer->NotHighLightConsole();
     
     while (true)
     {
 	    _fps.current_Calc_Period();
-	    buffer->Render(map, item, player, _fps);
-	    if (!player.Controle(map, _fps)) break;
+	    buffer->Render(map, player, _fps, gameSpace);
+	    if (!player.Controle(map, _fps, gameSpace)) break;
     }
     
     _getch();

@@ -4,11 +4,28 @@ const float GameObject::max_collision_distance = 0.49f;
 const float GameObject::max_render_area = 0.49f;
 const float GameObject::pi = 3.1415926f;
 
-GameObject::GameObject(float x, float y, const Map& map, float collision_area, float render_area)
+GameObject::GameObject()
+{
+	_positionX = 0;
+	_positionY = 0;
+	_collision_distance = 0;
+	_render_area = 0;
+}
+
+GameObject::GameObject(float x, float y, const Map& map, float collision_area, float render_area, char symbol)
 {
 	SetPosition (x, y, map);
 	SetCollision_distanse(collision_area);
 	SetRender_area(render_area);
+	_symbol = symbol;
+}
+
+void GameObject::Initialise(float x, float y, const Map& map, float collision_area, float render_area, char symbol)
+{
+	SetPosition(x, y, map);
+	SetCollision_distanse(collision_area);
+	SetRender_area(render_area);
+	_symbol = symbol;
 }
 
 void GameObject::SetPosition(float x, float y, const Map& map)
@@ -22,8 +39,7 @@ void GameObject::SetPosition(float x, float y, const Map& map)
 	}
 	else
 	{
-		_positionX = 1;
-		_positionY = 1;
+		throw PositionError("impermissible position");
 	}
 }
 
@@ -69,4 +85,9 @@ float GameObject::GetCollision_distanse() const
 float GameObject::GetRender_area() const
 {
 	return _render_area;
+}
+
+char GameObject::GetSymbol() const
+{
+	return _symbol;
 }

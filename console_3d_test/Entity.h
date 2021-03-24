@@ -12,7 +12,7 @@ protected:
 public:
 
 	Entity(float x, float y, float collision_distanse, float render_area, float conor_of_view, float view_position_increment,
-		float view_position, float rotation_speed, float walk_speed, float deceleration, float exeleration, Map& map);
+		float view_position, float rotation_speed, float walk_speed, float deceleration, float exeleration, Map& map, char symbol);
 	void SetConorOfView(float conor_of_view);
 	void SetViewPositionIncrement(float view_position_increment);
 	void SetViewPosition(float view_position);
@@ -24,7 +24,10 @@ public:
 	float GetConorOfView();
 	float GetView_Position();
 
-	virtual bool Controle(Map& map, FPS& _fps) = 0;
+	bool InRenderArea(float x, float y) const override;
+	bool InCollisionArea(float x, float y) const override;
+
+	virtual bool Controle(Map& map, FPS& _fps, GameSpace& gameSpace) = 0;
 	virtual ~Entity() = 0 {};
 };
 

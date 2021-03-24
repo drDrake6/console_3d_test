@@ -150,12 +150,16 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PositionError.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="VerticalLine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Collision_checker.h" />
     <ClInclude Include="ConsoleBufferString.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Exeptions.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameSpace.h" />
@@ -163,6 +167,11 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PositionError.h" />
+    <ClInclude Include="Rectangle.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,7 +3,7 @@
 Entity::Entity(float x, float y, float collision_distanse, float render_area, 
 	float conor_of_view, float view_position_increment, float view_position, 
 	float rotation_speed, float walk_speed, float deceleration, float exeleration, 
-	Map& map) : GameObject(x, y, map, collision_distanse, render_area)
+	Map& map, char symbol) : GameObject(x, y, map, collision_distanse, render_area, symbol)
 {
 	SetConorOfView(conor_of_view);
 	SetViewPositionIncrement(view_position_increment);
@@ -107,4 +107,23 @@ void Entity::SetExeleration(float exeleration)
 	float Entity::GetView_Position()
 	{
 		return _view_position;
+	}
+
+	bool Entity::InRenderArea(float x, float y) const
+	{
+		if (pow((x - _positionX), 2) + pow((y - _positionY), 2) <= pow(max_render_area, 2))
+			return true;
+		else
+			return false;
+	}
+
+	bool Entity::InCollisionArea(float x, float y) const
+	{
+		if (x >= _positionX - _collision_distance &&
+			x <= _positionX + _collision_distance &&
+			y >= _positionY - _collision_distance &&
+			y <= _positionY + _collision_distance)
+			return true;
+		else
+			return false;
 	}

@@ -129,15 +129,22 @@ bool ConsoleBufferString::DeleteInstance()
 
 void ConsoleBufferString::SetConsoleBufferMode()
 {
-	hConsole = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL); // Буфер экрана
+	hConsole = CreateConsoleScreenBuffer(
+		GENERIC_READ | 
+		GENERIC_WRITE, 
+		0, 
+		NULL, 
+		CONSOLE_TEXTMODE_BUFFER, 
+		NULL); // Буфер экрана
 }
 
-void ConsoleBufferString::Render(Map& map, Item& item, Entity& player, FPS& _fps)
+void ConsoleBufferString::Render(Map& map, Entity& player, FPS& _fps, GameSpace& gameSpace)
 {
 	float conor_per_ray = player.GetConorOfView() / _console_width;
 	float current_conor = player.GetView_Position();
 	float Point_On_RayX;
 	float Point_On_RayY;
+	
 
 	for (int i = _console_width - 1; i >= 0; i--)
 	{
@@ -148,6 +155,7 @@ void ConsoleBufferString::Render(Map& map, Item& item, Entity& player, FPS& _fps
 
 		float conor_cos = cosf(current_conor);
 		float conor_sin = sinf(current_conor);
+		
 
 		for (float ray_size = 0;;)
 		{
@@ -156,33 +164,14 @@ void ConsoleBufferString::Render(Map& map, Item& item, Entity& player, FPS& _fps
 			Point_On_RayX = player.GetPosition_X() + ray_size * conor_cos;
 			Point_On_RayY = player.GetPosition_Y() + ray_size * conor_sin;
 
-			if (map[(short)Point_On_RayX][(short)Point_On_RayY] != ' '
-				//&& map[(short)Point_On_RayX][(short)Point_On_RayY] != previous_symbol
-				)
+			Item* object = dynamic_cast<Item*>(gameSpace.FindItemByRander(Point_On_RayX, Point_On_RayY));
+			if (object)
+			{				
+				DetectedObjects.push({ *object, Point_On_RayX, Point_On_RayY, ray_size, i, Is_wallblock_conor });
+			}
+
+			if (map[(short)Point_On_RayX][(short)Point_On_RayY] != ' ')
 			{
-				//previous_symbol = map[(short)Point_On_RayX][(short)Point_On_RayY];
-
-				if (map[(short)Point_On_RayX][(short)Point_On_RayY] != '#')
-				{
-					float x = item.GetPosition_X();
-					float y = item.GetPosition_Y();
-					/*float radius = item.GetCollision_distanse();
-
-					float x_square = pow(Point_On_RayX - x, 2);
-					float y_square = pow(Point_On_RayY - y, 2);
-					float radius_square = pow(radius, 2);
-
-					float left = x_square + y_square;*/
-
-					if (Point_On_RayX >= x - item.GetRender_area() &&
-						Point_On_RayX <= x + item.GetRender_area() &&
-						Point_On_RayY >= y - item.GetWidth() &&
-						Point_On_RayY <= y + item.GetWidth())
-					{
-						DetectedObjects.push({ map[(short)Point_On_RayX][(short)Point_On_RayY],
-						Point_On_RayX, Point_On_RayY, ray_size, i, Is_wallblock_conor });
-					}					
-				}
 
 				if (map[(short)Point_On_RayX][(short)Point_On_RayY] == '#')
 				{
@@ -215,12 +204,11 @@ void ConsoleBufferString::Render(Map& map, Item& item, Entity& player, FPS& _fps
 					if (acos(p.at(2).second) < conor_per_ray / 2)
 						Is_wallblock_conor = true;
 
-					VerticalLine({ map[(short)Point_On_RayX][(short)Point_On_RayY],
-						Point_On_RayX, Point_On_RayX, ray_size, i, Is_wallblock_conor }).PrintWall();
+					VerticalLine::PrintWall(ray_size, i, Is_wallblock_conor);
 
 					while (!DetectedObjects.empty())
 					{
-						DetectedObjects.top().PrintCircle();
+						DetectedObjects.top().PrintObject();
 						DetectedObjects.pop();
 					}
 
@@ -239,14 +227,14 @@ void ConsoleBufferString::Render(Map& map, Item& item, Entity& player, FPS& _fps
 		}		
 	}
 
-		PrintDebugInfo(player, map, _fps);
+		PrintDebugInfo(player, map, _fps, gameSpace);
 
 #ifndef DEBUG
 		WriteInBuffer();
 #endif
 }
 
-void ConsoleBufferString::PrintDebugInfo(Entity& player, Map& map, FPS& _fps)
+void ConsoleBufferString::PrintDebugInfo(Entity& player, Map& map, FPS& _fps, const GameSpace& gameSpace)
 {
 	swprintf_s(screen, 42, L"X=%3.2f, Y=%3.2f, PV=%3d, FPS=%2.2f", 
 		player.GetPosition_X(), player.GetPosition_Y(), 
@@ -258,6 +246,13 @@ void ConsoleBufferString::PrintDebugInfo(Entity& player, Map& map, FPS& _fps)
 		{
 			screen[(nx + 1) * _console_width + ny] = map[nx][ny];
 		}
+
+
+	for (int i = 0; i < gameSpace.GetSize(); i++)
+	{
+		screen[((int)(gameSpace[i]->GetPosition_X()) + 1) * _console_width + (int)(gameSpace[i]->GetPosition_Y())] = gameSpace[i]->GetSymbol();
+	}
+
 	screen[((int)(player.GetPosition_X()) + 1) * _console_width + (int)(player.GetPosition_Y())] = 'P';
 
 	screen[_size - 1] = '\0';

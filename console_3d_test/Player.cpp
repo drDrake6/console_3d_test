@@ -1,13 +1,13 @@
 #include "Headers.h"
 
 Player::Player(float x, float y, float collision_radius, float render_area, float conor_of_view, float view_position_increment,
-float view_position, float rotation_speed, float walk_speed, float deceleration, float exeleration, Map& map) :
+float view_position, float rotation_speed, float walk_speed, float deceleration, float exeleration, Map& map, char symbol) :
 Entity(x, y, collision_radius, render_area, conor_of_view, view_position_increment, view_position, rotation_speed,
-	walk_speed, deceleration, exeleration, map)
+	walk_speed, deceleration, exeleration, map, symbol)
 {	
 }
 
-bool Player::Controle(Map& map, FPS& _fps)
+bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 {
 	float walk_speed;
 

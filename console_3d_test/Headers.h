@@ -8,15 +8,18 @@
 #include <vector>
 #include <stack>
 #include <map>
+#include <typeinfo>
 using namespace std;
 
+#include "Exeptions.h"
 #include "FPS.h"
 #include "DynamicArray.h"
 #include "Map.h"
 #include "GameObject.h"
+#include "GameSpace.h"
 #include "Item.h"
 #include "Entity.h"
-#include "GameSpace.h"
 #include "Circle.h"
+#include "Rectangle.h"
 #include "Player.h"
 #include "ConsoleBufferString.h"
