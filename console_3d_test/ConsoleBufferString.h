@@ -46,6 +46,8 @@ class ConsoleBufferString
 		void PrintObject();
 		void PrintCircle();
 		void PrintRectangle();
+		void PrintTriangle();
+		void PrintRhombus();
 
 		static void PrintWall(float ray_size, int current_rays_amount, bool Is_wallblock_conor);
 	};

@@ -1,5 +1,7 @@
 #include "Headers.h"
 
+const int Player::max_Inventory_size = 10;
+
 Player::Player(float x, float y, float collision_radius, float render_area, float conor_of_view, float view_position_increment,
 float view_position, float rotation_speed, float walk_speed, float deceleration, float exeleration, Map& map, char symbol) :
 Entity(x, y, collision_radius, render_area, conor_of_view, view_position_increment, view_position, rotation_speed,
@@ -214,4 +216,28 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 	{
 		return 1;
 	}
+}
+
+void Player::PicItem(Item* item)
+{
+	if (Inventory.size() + 1 <= max_Inventory_size)
+		Inventory.push_back(item);
+}
+
+void Player::DropItem(Map& map, GameSpace& gameSpace)
+{
+	float current_view_conor = _conor_of_view / 2 + _view_position;
+
+	float drop_distanceX = cosf(current_view_conor) * 0.51f;
+	float drop_distanceY = sinf(current_view_conor) * 0.51f;
+
+	if (map[drop_distanceX][drop_distanceY] == '#')
+		return;
+
+	auto it = Inventory.begin();
+	advance(it, current_item);	
+
+	(*it)->SetPosition(drop_distanceX, drop_distanceY, map);
+	gameSpace.AddItem(*it);
+	Inventory.erase(it);
 }

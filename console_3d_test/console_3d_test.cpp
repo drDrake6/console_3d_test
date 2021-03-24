@@ -36,6 +36,8 @@ int main()
     Circle circle3;
     Circle circle4;
     Rect rect;
+    Triangle triangle;
+    Rhombus rhombus;
 
     try
     {
@@ -53,6 +55,12 @@ int main()
 
         rect.InitialiseRectangle(13.5f, 13.5f, map, 0.5f, 0.5f);
         gameSpace.AddItem(&rect);
+
+        triangle.InitialiseTriangle(2.5f, 3.5f, map, 0.5f, 0.5f);
+        gameSpace.AddItem(&triangle);
+
+        rhombus.InitialiseRhombus(4.5f, 16.5f, map, 0.5f, 0.5f);
+        gameSpace.AddItem(&rhombus);
     }
     catch (PositionError& exp)
     {

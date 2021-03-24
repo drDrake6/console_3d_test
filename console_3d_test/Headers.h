@@ -7,7 +7,7 @@
 #include <chrono>
 #include <vector>
 #include <stack>
-#include <map>
+#include <list>
 #include <typeinfo>
 using namespace std;
 
@@ -21,5 +21,7 @@ using namespace std;
 #include "Entity.h"
 #include "Circle.h"
 #include "Rectangle.h"
+#include "Triangle.h"
+#include "Rhombus.h"
 #include "Player.h"
 #include "ConsoleBufferString.h"
