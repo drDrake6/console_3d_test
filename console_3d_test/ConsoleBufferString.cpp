@@ -229,6 +229,7 @@ void ConsoleBufferString::Render(Map& map, Player& player, FPS& _fps, GameSpace&
 	}
 
 		PrintDebugInfo(player, map, _fps, gameSpace);
+		PrintInventory(player);
 
 #ifndef DEBUG
 		WriteInBuffer();
@@ -256,5 +257,42 @@ void ConsoleBufferString::PrintDebugInfo(const Player& player, Map& map, FPS& _f
 
 	screen[((int)(player.GetPosition_X()) + 1) * _console_width + (int)(player.GetPosition_Y())] = 'P';
 
-	screen[_size - 1] = '\0';
+	screen[_size - 1] = '\0';	
+}
+
+void ConsoleBufferString::PrintInventory(const Player& player)
+{
+	for (size_t i = 2; i > 0; i--)
+	{
+		for (size_t j = 0; j < 21; j++)
+		{
+			if(i == 1 && (j & 1))
+				screen[(_console_height - i) * _console_width +
+				(_console_width / 2 - 21 / 2) + j] = ' ';
+			else
+			screen[(_console_height - i) * _console_width +
+				(_console_width / 2 - 21 / 2) + j] = 9608;
+		}
+	}
+	
+	screen[(_console_height - 2) * _console_width +
+	(_console_width / 2 - 19 / 2) + player.GetCurrentItemIndex() * 2] = 'V';
+
+	if (player.GetInventorySize())
+	{
+		for (size_t i = 0; i < player.GetInventorySize(); i++)
+		{
+			if (player[i] == nullptr)
+			{
+				screen[(_console_height - 1) * _console_width +
+					(_console_width / 2 - 19 / 2) + i * 2] = ' ';
+			}
+			else
+			{
+				screen[(_console_height - 1) * _console_width +
+					(_console_width / 2 - 19 / 2) + i * 2] = player[i]->GetSymbol();
+			}
+		}
+		
+	}
 }

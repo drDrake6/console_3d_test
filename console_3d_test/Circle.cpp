@@ -10,8 +10,8 @@ Circle::Circle(float positionX, float positionY, const Map& map,
 {
 }
 
-void Circle::InitialiseCircle(float positionX, float positionY, const Map& map, float collision_area, float render_area)
+void Circle::Initialize(float positionX, float positionY, const Map& map, float collision_area, float render_area)
 {
-	Initialise(positionX, positionY, map,
-		collision_area, render_area, 'o');
+	GameObject::Init(positionX, positionY, map, collision_area, render_area);
+	_symbol = 'o';
 }

@@ -10,8 +10,8 @@ Triangle::Triangle(float positionX, float positionY, const Map& map, float colli
 {
 }
 
-void Triangle::InitialiseTriangle(float positionX, float positionY, const Map& map, float collision_area, float render_area)
+void Triangle::Initialize(float positionX, float positionY, const Map& map, float collision_area, float render_area)
 {
-	Initialise(positionX, positionY, map,
-		collision_area, render_area, '^');
+	GameObject::Init(positionX, positionY, map, collision_area, render_area);
+	_symbol = '^';
 }

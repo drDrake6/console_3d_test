@@ -20,12 +20,19 @@ GameObject::GameObject(float x, float y, const Map& map, float collision_area, f
 	_symbol = symbol;
 }
 
-void GameObject::Initialise(float x, float y, const Map& map, float collision_area, float render_area, char symbol)
+/*void GameObject::Initialise(float x, float y, const Map& map, float collision_area, float render_area, char symbol)
 {
 	SetPosition(x, y, map);
 	SetCollision_distanse(collision_area);
 	SetRender_area(render_area);
 	_symbol = symbol;
+}*/
+
+void GameObject::Init(float positionX, float positionY, const Map& map, float collision_area, float render_area)
+{
+	SetPosition(positionX, positionY, map);
+	SetCollision_distanse(collision_area);
+	SetRender_area(render_area);
 }
 
 void GameObject::SetPosition(float x, float y, const Map& map)

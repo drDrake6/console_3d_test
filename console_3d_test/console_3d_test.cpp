@@ -26,13 +26,12 @@ int main()
                   //0123456789012345678
                   //          1
     Map map(game_space);
-    Player player(13.5f, 8.86f, 0.0f, 0.0f, 60.0f, 1.5f, 73.0f, 1.5f, 30.0f, 0.25f, 2.0f,
-        map, 'P', 100);
-   /* Entity& player = _player;*/
+    Player player(13.5f, 8.86f, 0.0f, 0.0f, 60.0f, 1.5f, 73.0f, 1.5f, 30.0f, 0.25f,
+        2.0f, map, 'P', 100);
 
     GameSpace gameSpace;
 
-    Circle circle;
+    Circle circle ;
     Circle circle2;
     Circle circle3;
     Circle circle4;
@@ -44,46 +43,45 @@ int main()
     Rhombus rhombus3;
     Rhombus rhombus4;
 
-    try
-    {
-        circle.InitialiseCircle(6.9f, 9.9f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&circle);
+    gameSpace.AddObject(&circle);
+    gameSpace.AddObject(&circle2);
+    gameSpace.AddObject(&circle3);
+    gameSpace.AddObject(&circle4);
+    gameSpace.AddObject(&rect);
+    gameSpace.AddObject(&triangle);
+    gameSpace.AddObject(&rhombus);
+    gameSpace.AddObject(&rhombus1);
+    gameSpace.AddObject(&rhombus2);
+    gameSpace.AddObject(&rhombus3);
+    gameSpace.AddObject(&rhombus4);
 
-        circle2.InitialiseCircle(2.5f, 14.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&circle2);
+    vector<pair<float, float>> coords;
+    coords.push_back({ 6.9f , 9.9f });
+    coords.push_back({ 2.5f , 14.5f });
+    coords.push_back({ 14.5f, 2.5f });
+    coords.push_back({ 9.5f , 6.5f });
+    coords.push_back({ 1.5f , 9.5f });
+    coords.push_back({ 2.5f , 3.5f });
+    coords.push_back({ 4.5f , 16.5f });
+    coords.push_back({ 12.5f, 6.5f });
+    coords.push_back({ 9.5f , 14.5f });
+    coords.push_back({ 7.5f , 16.5f });
+    coords.push_back({ 1.5f , 17.5f });
 
-        circle3.InitialiseCircle(14.5f, 2.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&circle3);
-
-        circle4.InitialiseCircle(9.5f, 6.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&circle4);
-
-        rect.InitialiseRectangle(1.5f, 9.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&rect);
-
-        triangle.InitialiseTriangle(2.5f, 3.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&triangle);
-
-        rhombus.InitialiseRhombus(4.5f, 16.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&rhombus);
-
-        rhombus1.InitialiseRhombus(12.5f, 7.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&rhombus1);
-
-        rhombus2.InitialiseRhombus(9.5f, 14.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&rhombus2);
-
-        rhombus3.InitialiseRhombus(7.5f, 16.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&rhombus3);
-
-        rhombus4.InitialiseRhombus(1.5f, 17.5f, map, 0.5f, 0.5f);
-        gameSpace.AddObject(&rhombus4);
-    }
-    catch (PositionError& exp)
-    {
-        cout << exp.what() << ", press any key...";
-        _getch();
-    }     
+        for (int i = 0; i < gameSpace.GetSize(); i++)
+        {
+            try
+            {
+                gameSpace[i]->Initialize(coords[i].first, coords[i].second,
+                    map, 0.5f, 0.5f);
+            }
+            catch (PositionError& exp)
+            {
+                cout << i << ") " << typeid(*(gameSpace[i])).name() << " " << exp.what() << ", press any key...";
+                _getch();
+            }
+        }
+       
 
     FPS _fps;
 

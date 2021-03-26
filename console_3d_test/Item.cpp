@@ -34,3 +34,8 @@ bool Item::InCollisionArea(float x, float y) const
 	else
 		return false;
 }
+
+/*void Item::Initialise(float positionX, float positionY, const Map& map, float collision_area, float render_area)
+{
+	GameObject::Initialize(positionX, positionY, map, collision_area, render_area);
+}*/

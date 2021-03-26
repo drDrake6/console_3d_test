@@ -10,8 +10,8 @@ Rhombus::Rhombus(float positionX, float positionY, const Map& map,
 {
 }
 
-void Rhombus::InitialiseRhombus(float positionX, float positionY, const Map& map, float collision_area, float render_area)
+void Rhombus::Initialize(float positionX, float positionY, const Map& map, float collision_area, float render_area)
 {
-	Initialise(positionX, positionY, map,
-		collision_area, render_area, 'X');
+	GameObject::Init(positionX, positionY, map, collision_area, render_area);
+	_symbol = 'X';
 }

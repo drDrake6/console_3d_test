@@ -71,4 +71,5 @@ public:
 	void SetConsoleBufferMode();
 	void Render(Map& map, Player& player, FPS& _fps, GameSpace& gameSpace);
 	void PrintDebugInfo(const Player& player, Map& map, FPS& _fps, const GameSpace& gameSpace);
+	void PrintInventory(const Player& player);
 };

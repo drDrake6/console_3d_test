@@ -17,8 +17,11 @@ public:
 	GameObject(float positionX, float positionY, const Map& map, float collision_area, 
 		float render_area, char symbol);
 
-	void Initialise(float positionX, float positionY, const Map& map, float collision_area,
-		float render_area, char symbol);
+	void Init(float positionX, float positionY, const Map& map, float collision_area,
+		float render_area);
+
+	virtual void Initialize(float positionX, float positionY, const Map& map, float collision_area,
+		float render_area) = 0;
 	void SetPosition(float x, float y, const Map& map);
 	void SetCollision_distanse(float collision_area);
 	void SetRender_area(float render_area);

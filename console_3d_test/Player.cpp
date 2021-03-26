@@ -9,6 +9,7 @@ Player::Player(float x, float y, float collision_radius, float render_area,
 	conor_of_view, view_position_increment, view_position, rotation_speed, walk_speed, 
 	deceleration, exeleration, map, symbol, HP)
 {	
+	current_item = 0;
 }
 
 bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
@@ -215,6 +216,14 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 
 		PicItem(gameSpace);
 	}
+
+	if (GetAsyncKeyState((unsigned short)BUTTONS::Drop) & 0x1)
+	{
+		DropItem(map, gameSpace);
+	}
+
+	ChoseItem();
+
 	if (GetAsyncKeyState((unsigned short)BUTTONS::Ecs))
 	{
 		return 0;
@@ -227,6 +236,15 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 
 bool Player::PutItemToInventory(Item* item)
 {
+	for (size_t i = 0; i < Inventory.size(); i++)
+	{
+		if (Inventory[i] == nullptr)
+		{
+			Inventory[i] = item;
+			return true;
+		}
+	}
+
 	if (Inventory.size() + 1 <= max_Inventory_size)
 	{
 		Inventory.push_back(item);
@@ -240,20 +258,20 @@ bool Player::PutItemToInventory(Item* item)
 
 void Player::DropItem(Map& map, GameSpace& gameSpace)
 {
+	int size = Inventory.size() - 1;
 	float current_view_conor = _conor_of_view / 2 + _view_position;
 
-	float drop_distanceX = cosf(current_view_conor) * 0.51f;
-	float drop_distanceY = sinf(current_view_conor) * 0.51f;
+	float drop_distanceX = cosf(current_view_conor) * 1.0f;
+	float drop_distanceY = sinf(current_view_conor) * 1.0f;
 
-	if (map[drop_distanceX][drop_distanceY] == '#')
+	if (map[_positionX + drop_distanceX][_positionY + drop_distanceY] == '#'
+		|| size < current_item || Inventory[current_item] == nullptr)
 		return;
 
-	auto it = Inventory.begin();
-	advance(it, current_item);	
-
-	(*it)->SetPosition(drop_distanceX, drop_distanceY, map);
+	auto it = Inventory.begin() + current_item;
+	(*it)->SetPosition(_positionX + drop_distanceX, _positionY + drop_distanceY, map);
 	gameSpace.AddObject(*it);
-	Inventory.erase(it);
+	Inventory[current_item] = nullptr;
 }
 
 void Player::PicItem(GameSpace& gameSpace)
@@ -270,4 +288,56 @@ void Player::PicItem(GameSpace& gameSpace)
 int Player::GetInventorySize() const
 {
 	return Inventory.size();
+}
+
+int Player::GetCurrentItemIndex() const
+{
+	return current_item;
+}
+
+Item*& Player::operator[](int index)
+{
+	return Inventory[index];
+}
+
+Item* Player::operator[](int index) const
+{
+	return Inventory[index];
+}
+
+void Player::ChoseItem()
+{
+	if (GetAsyncKeyState(VK_NUMPAD0) ||
+		GetAsyncKeyState(VK_NUMPAD1) ||
+		GetAsyncKeyState(VK_NUMPAD2) ||
+		GetAsyncKeyState(VK_NUMPAD3) ||
+		GetAsyncKeyState(VK_NUMPAD4) ||
+		GetAsyncKeyState(VK_NUMPAD5) ||
+		GetAsyncKeyState(VK_NUMPAD6) ||
+		GetAsyncKeyState(VK_NUMPAD7) ||
+		GetAsyncKeyState(VK_NUMPAD8) ||
+		GetAsyncKeyState(VK_NUMPAD9))
+	{
+		if (GetAsyncKeyState(VK_NUMPAD0))
+			current_item = 0;
+		else if (GetAsyncKeyState(VK_NUMPAD1))
+			current_item = 1;
+		else if (GetAsyncKeyState(VK_NUMPAD2))
+			current_item = 2;
+		else if (GetAsyncKeyState(VK_NUMPAD3))
+			current_item = 3;
+		else if (GetAsyncKeyState(VK_NUMPAD4))
+			current_item = 4;
+		else if (GetAsyncKeyState(VK_NUMPAD5))
+			current_item = 5;
+		else if (GetAsyncKeyState(VK_NUMPAD6))
+			current_item = 6;
+		else if (GetAsyncKeyState(VK_NUMPAD7))
+			current_item = 7;
+		else if (GetAsyncKeyState(VK_NUMPAD8))
+			current_item = 8;
+		else if (GetAsyncKeyState(VK_NUMPAD9))
+			current_item = 9;
+	}
+
 }

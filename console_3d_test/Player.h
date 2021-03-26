@@ -16,9 +16,12 @@ class Player final : public Entity
 		SHIFT = VK_LSHIFT
 	};
 
-	list<Item*> Inventory;
+	vector<Item*> Inventory;
 
 	int current_item;
+
+	void Initialize(float positionX, float positionY, const Map& map, float collision_area,
+		float render_area) override {};
 
 public: 
 
@@ -34,5 +37,9 @@ public:
 	void DropItem(Map& map, GameSpace& gameSpace);
 	void PicItem(GameSpace& gameSpace);
 	int GetInventorySize() const;
+	int GetCurrentItemIndex() const;
+	Item*& operator[](int index);
+	Item* operator[](int index) const;
+	void ChoseItem();
 };
 
