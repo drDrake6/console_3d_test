@@ -1,7 +1,7 @@
 #include "Headers.h"
 
 const float GameObject::max_collision_distance = 0.49f;
-const float GameObject::max_render_area = 0.49f;
+const float GameObject::max_render_area = 0.5f;
 const float GameObject::pi = 3.1415926f;
 
 GameObject::GameObject()

@@ -1,70 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="GameObject" Collapsed="true">
-    <Position X="4.25" Y="2" Width="1.5" />
+    <Position X="3.25" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABAgAAIBAAAAQAIEAAgEARAMAAAAAgCAAAMAAAIAAAA=</HashCode>
+      <HashCode>ABAgAAIBAIAAQQIEAAgEARAMAIAAAgCAAAMAAAIAAAA=</HashCode>
       <FileName>GameObject.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Item" Collapsed="true">
-    <Position X="5.75" Y="3" Width="1.5" />
+    <Position X="5" Y="3" Width="1.5" />
+    <InheritanceLine Type="GameObject" ManuallyRouted="true">
+      <Path>
+        <Point X="4" Y="2.562" />
+        <Point X="4" Y="2.76" />
+        <Point X="5.75" Y="2.76" />
+        <Point X="5.75" Y="3" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAABAKAAAAAAQAAEAAAEAIAAAAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AAAAAAABACAAAAAAQAAEAAAEAAAAAAAAAAAAAEAAAAA=</HashCode>
       <FileName>Item.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Entity" Collapsed="true">
-    <Position X="2.75" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>NgACAAABAAAEASAIAgAEAACAACAAEBQAAEAAAAAABAI=</HashCode>
-      <FileName>Entity.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Player" Collapsed="true">
-    <Position X="2.75" Y="4.25" Width="1.5" />
-    <NestedTypes>
-      <Enum Name="Player::BUTTONS" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Player.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
-      <FileName>Player.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Circle" Collapsed="true">
-    <Position X="5.75" Y="4.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Circle.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="FPS" Collapsed="true">
-    <Position X="4.25" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAQAAAAAAAAABAAAIBEAAA=</HashCode>
-      <FileName>FPS.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Map" Collapsed="true">
-    <Position X="4.25" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ABAAAAAAABCAAAAAAAAAAABAABEAAAAAAEAAAEAAAAA=</HashCode>
-      <FileName>Map.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="GameSpace" Collapsed="true">
-    <Position X="4.25" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAQAABAIAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>GameSpace.h</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="ConsoleBufferString" Collapsed="true">
-    <Position X="4.25" Y="5" Width="1.5" />
+    <Position X="3.25" Y="5" Width="1.5" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -78,6 +37,85 @@
     <TypeIdentifier>
       <HashCode>AAABQAAADiAAAQEQAAAAAgSAAAECAAFAQBAgAAIAQAQ=</HashCode>
       <FileName>ConsoleBufferString.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rhombus" Collapsed="true">
+    <Position X="6.25" Y="4" Width="1.5" />
+    <InheritanceLine Type="Item" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.125" Y="3.691" />
+        <Point X="6.125" Y="3.877" />
+        <Point X="7.125" Y="3.877" />
+        <Point X="7.125" Y="4" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rhombus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity" Collapsed="true">
+    <Position X="1" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>NgACAAABAAAEASAIAgAEAACAACAAEBQAAEAAAAAABAI=</HashCode>
+      <FileName>Entity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="1" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgAAAAAAAAAAAAAAAAIAACAAAwAAAIA=</HashCode>
+      <FileName>Player.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triangle" Collapsed="true">
+    <Position X="8" Y="4" Width="1.5" />
+    <InheritanceLine Type="Item" ManuallyRouted="true">
+      <Path>
+        <Point X="6.5" Y="3.55" />
+        <Point X="7.877" Y="3.55" />
+        <Point X="7.877" Y="4.346" />
+        <Point X="8" Y="4.346" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Triangle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rect" Collapsed="true">
+    <Position X="4.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rectangle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Circle" Collapsed="true">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Circle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameSpace" Collapsed="true">
+    <Position X="3.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAKAAAAAIAAAgAEAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>GameSpace.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FPS" Collapsed="true">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAQAAAAAAAAABAAAIBEAAA=</HashCode>
+      <FileName>FPS.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Map" Collapsed="true">
+    <Position X="3.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAABCAAAAAAAAAAABAABEAAAAAAEAAAEAAAAA=</HashCode>
+      <FileName>Map.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

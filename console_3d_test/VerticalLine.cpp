@@ -25,7 +25,7 @@ void ConsoleBufferString::VerticalLine::PrintCircle()
 {
 	float radius = (_self->_console_height / 2) * 0.3f;
 	float center = _item.GetPosition_X();
-	float x = _position_ray_x + (abs(center - _position_ray_x) * radius) / 0.3;
+	float x = _position_ray_x + (abs(center - _position_ray_x) * radius) / 0.3f;
 
 	float r_sqare = pow(radius, 2);
 	float x_sqare = pow((x - center), 2);
@@ -70,7 +70,7 @@ void ConsoleBufferString::VerticalLine::PrintTriangle()
 {
 	float h = (_self->_console_height / 2) * 0.3f;
 	float center = _item.GetPosition_X();
-	float x = _position_ray_x + (abs(center - _position_ray_x) * h) / 0.3;
+	float x = _position_ray_x + (abs(center - _position_ray_x) * h) / 0.3f;
 
 	int height;
 	if (x < center)
@@ -97,15 +97,15 @@ void ConsoleBufferString::VerticalLine::PrintTriangle()
 
 void ConsoleBufferString::VerticalLine::PrintRhombus()
 {
-	float h = (_self->_console_height / 2) * 0.3f;
+	float h = ((float)(_self->_console_height) / 2.0f) * 0.3f;
 	float center = _item.GetPosition_X();
-	float x = _position_ray_x + (abs(center - _position_ray_x) * h) / 0.3;
+	float x = _position_ray_x + (abs(center - _position_ray_x)) * (h / 0.3f);
 
 	int height;
 	if (x < center)
 		height = x;
 	else
-		height = 2 * h - x;
+		height = x - 2 * (x - h);
 
 	int highest_y = ((float)(_self->_console_height / 2.0f)
 		- (float)height / _ray_size);

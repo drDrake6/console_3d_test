@@ -26,8 +26,9 @@ int main()
                   //0123456789012345678
                   //          1
     Map map(game_space);
-    Player _player(4.74f, 3.44f, 0.0f, 0.0f, 60.0f, 1.5f, 345.0f, 1.5f, 30.0f, 0.25f, 2.0f, map, 'P');
-    Entity& player = _player;
+    Player player(13.5f, 8.86f, 0.0f, 0.0f, 60.0f, 1.5f, 73.0f, 1.5f, 30.0f, 0.25f, 2.0f,
+        map, 'P', 100);
+   /* Entity& player = _player;*/
 
     GameSpace gameSpace;
 
@@ -38,29 +39,45 @@ int main()
     Rect rect;
     Triangle triangle;
     Rhombus rhombus;
+    Rhombus rhombus1;
+    Rhombus rhombus2;
+    Rhombus rhombus3;
+    Rhombus rhombus4;
 
     try
     {
         circle.InitialiseCircle(6.9f, 9.9f, map, 0.5f, 0.5f);
-        gameSpace.AddItem(&circle);
+        gameSpace.AddObject(&circle);
 
         circle2.InitialiseCircle(2.5f, 14.5f, map, 0.5f, 0.5f);
-        gameSpace.AddItem(&circle2);
+        gameSpace.AddObject(&circle2);
 
         circle3.InitialiseCircle(14.5f, 2.5f, map, 0.5f, 0.5f);
-        gameSpace.AddItem(&circle3);
+        gameSpace.AddObject(&circle3);
 
         circle4.InitialiseCircle(9.5f, 6.5f, map, 0.5f, 0.5f);
-        gameSpace.AddItem(&circle4);
+        gameSpace.AddObject(&circle4);
 
-        rect.InitialiseRectangle(13.5f, 13.5f, map, 0.5f, 0.5f);
-        gameSpace.AddItem(&rect);
+        rect.InitialiseRectangle(1.5f, 9.5f, map, 0.5f, 0.5f);
+        gameSpace.AddObject(&rect);
 
         triangle.InitialiseTriangle(2.5f, 3.5f, map, 0.5f, 0.5f);
-        gameSpace.AddItem(&triangle);
+        gameSpace.AddObject(&triangle);
 
         rhombus.InitialiseRhombus(4.5f, 16.5f, map, 0.5f, 0.5f);
-        gameSpace.AddItem(&rhombus);
+        gameSpace.AddObject(&rhombus);
+
+        rhombus1.InitialiseRhombus(12.5f, 7.5f, map, 0.5f, 0.5f);
+        gameSpace.AddObject(&rhombus1);
+
+        rhombus2.InitialiseRhombus(9.5f, 14.5f, map, 0.5f, 0.5f);
+        gameSpace.AddObject(&rhombus2);
+
+        rhombus3.InitialiseRhombus(7.5f, 16.5f, map, 0.5f, 0.5f);
+        gameSpace.AddObject(&rhombus3);
+
+        rhombus4.InitialiseRhombus(1.5f, 17.5f, map, 0.5f, 0.5f);
+        gameSpace.AddObject(&rhombus4);
     }
     catch (PositionError& exp)
     {

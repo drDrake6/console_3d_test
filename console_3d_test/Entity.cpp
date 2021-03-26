@@ -2,8 +2,8 @@
 
 Entity::Entity(float x, float y, float collision_distanse, float render_area, 
 	float conor_of_view, float view_position_increment, float view_position, 
-	float rotation_speed, float walk_speed, float deceleration, float exeleration, 
-	Map& map, char symbol) : GameObject(x, y, map, collision_distanse, render_area, symbol)
+	float rotation_speed, float walk_speed, float deceleration, float exeleration, Map& map,
+	char symbol, int HP) : GameObject(x, y, map, collision_distanse, render_area, symbol)
 {
 	SetConorOfView(conor_of_view);
 	SetViewPositionIncrement(view_position_increment);
@@ -12,6 +12,7 @@ Entity::Entity(float x, float y, float collision_distanse, float render_area,
 	SetWalkSpeed(walk_speed);
 	SetDeceleration(deceleration);
 	SetExeleration(exeleration);
+	SetHP(HP);
 }
 
 void Entity::SetConorOfView(float conor_of_view)
@@ -99,12 +100,20 @@ void Entity::SetExeleration(float exeleration)
 	}
 }
 
-	float Entity::GetConorOfView()
+void Entity::SetHP(int HP)
+{
+	if (HP > 0 && HP <= 100)
+		_HP = HP;
+	else
+		throw out_of_range("error, HP is too few or too big");
+}
+
+	float Entity::GetConorOfView() const
 	{
 		return _conor_of_view;
 	}
 
-	float Entity::GetView_Position()
+	float Entity::GetView_Position() const
 	{
 		return _view_position;
 	}

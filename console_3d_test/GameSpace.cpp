@@ -1,11 +1,11 @@
 #include "Headers.h"
 
-void GameSpace::AddItem(GameObject* item)
+void GameSpace::AddObject(GameObject* item)
 {
 	_objects.push_back(item);
 }
 
-GameObject* GameSpace::FindItemByRander(float x, float y) const
+GameObject* GameSpace::FindObjectByRander(float x, float y) const
 {
 	for (auto i : _objects)
 	{
@@ -16,7 +16,7 @@ GameObject* GameSpace::FindItemByRander(float x, float y) const
 	return nullptr;
 }
 
-int GameSpace::FindItemByCollision(float x, float y) const
+int GameSpace::FindObjectByCollision(float x, float y) const
 {
 	for (auto i = _objects.begin(); i != _objects.end(); i++)
 	{
@@ -27,12 +27,23 @@ int GameSpace::FindItemByCollision(float x, float y) const
 	return -1;
 }
 
-GameObject* GameSpace::TakeItem(int index)
+GameObject* GameSpace::TakeObject(int index)
 {
 	if (index < 0 || index >= _objects.size())
-		throw out_of_range("out of game objects");
+		return nullptr;
 
 	return _objects[index];
+}
+
+GameObject* GameSpace::TakeObjectByCollision(float x, float y)
+{
+	int index = FindObjectByCollision(x, y);
+	return TakeObject(index);
+}
+
+void GameSpace::DeleteObject(int index)
+{
+	_objects.erase(_objects.begin() + index);
 }
 
 int GameSpace::GetSize() const

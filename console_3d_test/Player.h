@@ -11,6 +11,7 @@ class Player final : public Entity
 		S = 'S', 
 		D = 'D', 
 		Drop = 'Q',
+		Interact = 'E',
 		Ecs = VK_ESCAPE, 
 		SHIFT = VK_LSHIFT
 	};
@@ -25,12 +26,13 @@ public:
 
 	Player(float x, float y, float collision_radius, float render_area, float conor_of_view, float view_position_increment,
 		float view_position, float rotation_speed, float walk_speed, float deceleration,
-		float exeleration, Map& map, char symbol);
+		float exeleration, Map& map, char symbol, int HP);
 
 	virtual bool Controle(Map& map, FPS& _fps, GameSpace& gameSpace) override final;
 
-	void PicItem(Item* item);
-
+	bool PutItemToInventory(Item* item);
 	void DropItem(Map& map, GameSpace& gameSpace);
+	void PicItem(GameSpace& gameSpace);
+	int GetInventorySize() const;
 };
 

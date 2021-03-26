@@ -138,7 +138,7 @@ void ConsoleBufferString::SetConsoleBufferMode()
 		NULL); // Буфер экрана
 }
 
-void ConsoleBufferString::Render(Map& map, Entity& player, FPS& _fps, GameSpace& gameSpace)
+void ConsoleBufferString::Render(Map& map, Player& player, FPS& _fps, GameSpace& gameSpace)
 {
 	float conor_per_ray = player.GetConorOfView() / _console_width;
 	float current_conor = player.GetView_Position();
@@ -164,9 +164,10 @@ void ConsoleBufferString::Render(Map& map, Entity& player, FPS& _fps, GameSpace&
 			Point_On_RayX = player.GetPosition_X() + ray_size * conor_cos;
 			Point_On_RayY = player.GetPosition_Y() + ray_size * conor_sin;
 
-			Item* object = dynamic_cast<Item*>(gameSpace.FindItemByRander(Point_On_RayX, Point_On_RayY));
+			Item* object = dynamic_cast<Item*>(gameSpace.FindObjectByRander(Point_On_RayX, Point_On_RayY));
 			if (object)
 			{				
+
 				DetectedObjects.push({ *object, Point_On_RayX, Point_On_RayY, ray_size, i, Is_wallblock_conor });
 			}
 
@@ -234,12 +235,12 @@ void ConsoleBufferString::Render(Map& map, Entity& player, FPS& _fps, GameSpace&
 #endif
 }
 
-void ConsoleBufferString::PrintDebugInfo(Entity& player, Map& map, FPS& _fps, const GameSpace& gameSpace)
+void ConsoleBufferString::PrintDebugInfo(const Player& player, Map& map, FPS& _fps, const GameSpace& gameSpace)
 {
-	swprintf_s(screen, 42, L"X=%3.2f, Y=%3.2f, PV=%3d, FPS=%2.2f", 
+	swprintf_s(screen, 47, L"X=%3.2f, Y=%3.2f, PV=%3d, IS=%2d, FPS=%2.2f", 
 		player.GetPosition_X(), player.GetPosition_Y(), 
 		(int)abs(((player.GetView_Position() * 180.0f) / 3.14f)) % 360, 
-		1.0f / _fps.GetFPS());
+		player.GetInventorySize(), 1.0f / _fps.GetFPS());
 
 	for (int nx = 0; nx < map.GetHeight(); nx++)
 		for (int ny = 0; ny < map.GetWidth(); ny++)
