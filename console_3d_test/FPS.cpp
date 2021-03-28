@@ -10,10 +10,15 @@ void FPS::current_Calc_Period()
 	frame_2 = chrono::system_clock::now();
 	Current_frame = frame_2 - frame_1;
 	frame_1 = frame_2;
-	fps = Current_frame.count();
+	Period = Current_frame.count();
 }
 
-float FPS::GetFPS()
+float FPS::GetSecondsPerFrame()
 {
-	return fps;
+	return Period;
+}
+
+float FPS::GetFramesPerSecond()
+{
+	return (1.0f / Period);
 }

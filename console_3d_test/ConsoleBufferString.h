@@ -24,18 +24,17 @@ class ConsoleBufferString
 		
 	struct VerticalLine
 	{
-		Item& _item;
+		GameObject& _object;
 		float _position_ray_x;
 		float _position_ray_y;
 		float _ray_size;
 		int   _current_rays_amount;
 		bool  _Is_wallblock_conor;
 
-		VerticalLine(Item& item, float position_ray_x,
+		VerticalLine(GameObject& object, float position_ray_x,
 			float position_ray_y, float ray_size,
-			int current_rays_amount, bool Is_wallblock_conor) : _item(item)
+			int current_rays_amount, bool Is_wallblock_conor) : _object(object)
 		{
-			_item = item;
 			_position_ray_x = position_ray_x;
 			_position_ray_y = position_ray_y;
 			_ray_size = ray_size;
@@ -48,6 +47,11 @@ class ConsoleBufferString
 		void PrintRectangle();
 		void PrintTriangle();
 		void PrintRhombus();
+		void PrintMedKit();
+		void PrintTrap();
+		void PrintWeakTrap();
+		void PrintMediumTrap();
+		void PrintStrongTrap();
 
 		static void PrintWall(float ray_size, int current_rays_amount, bool Is_wallblock_conor);
 	};
@@ -72,4 +76,6 @@ public:
 	void Render(Map& map, Player& player, FPS& _fps, GameSpace& gameSpace);
 	void PrintDebugInfo(const Player& player, Map& map, FPS& _fps, const GameSpace& gameSpace);
 	void PrintInventory(const Player& player);
+	void PrintGameOver();
+	void ClearScrean();
 };

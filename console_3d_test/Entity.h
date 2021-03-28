@@ -9,7 +9,7 @@ protected:
 	float _walk_speed;
 	float _deceleration;
 	float _exeleration;
-	int _HP;
+	float _HP;
 public:
 
 	Entity(float x, float y, float collision_distanse, float render_area, 
@@ -23,8 +23,10 @@ public:
 	void SetWalkSpeed(float walk_speed);
 	void SetDeceleration(float deceleration);
 	void SetExeleration(float exeleration);
-	void SetHP(int HP);
+	void SetHP(float HP);
+	float GetHP() const;
 
+	void GetIntoTrap(GameSpace& gamespace, FPS& _fps);
 	float GetConorOfView() const;
 	float GetView_Position() const;
 

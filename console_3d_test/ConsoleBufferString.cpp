@@ -164,10 +164,9 @@ void ConsoleBufferString::Render(Map& map, Player& player, FPS& _fps, GameSpace&
 			Point_On_RayX = player.GetPosition_X() + ray_size * conor_cos;
 			Point_On_RayY = player.GetPosition_Y() + ray_size * conor_sin;
 
-			Item* object = dynamic_cast<Item*>(gameSpace.FindObjectByRander(Point_On_RayX, Point_On_RayY));
+			GameObject* object = gameSpace.FindObjectByRander(Point_On_RayX, Point_On_RayY);
 			if (object)
 			{				
-
 				DetectedObjects.push({ *object, Point_On_RayX, Point_On_RayY, ray_size, i, Is_wallblock_conor });
 			}
 
@@ -236,12 +235,13 @@ void ConsoleBufferString::Render(Map& map, Player& player, FPS& _fps, GameSpace&
 #endif
 }
 
-void ConsoleBufferString::PrintDebugInfo(const Player& player, Map& map, FPS& _fps, const GameSpace& gameSpace)
+void ConsoleBufferString::PrintDebugInfo(const Player& player, Map& map, 
+	FPS& _fps, const GameSpace& gameSpace)
 {
-	swprintf_s(screen, 47, L"X=%3.2f, Y=%3.2f, PV=%3d, IS=%2d, FPS=%2.2f", 
+	swprintf_s(screen, 58, L"X=%3.2f, Y=%3.2f, PV=%3d, IS=%2d, HP=%3.2f, FPS=%2.2f", 
 		player.GetPosition_X(), player.GetPosition_Y(), 
 		(int)abs(((player.GetView_Position() * 180.0f) / 3.14f)) % 360, 
-		player.GetInventorySize(), 1.0f / _fps.GetFPS());
+		player.GetInventorySize(), player.GetHP(), _fps.GetFramesPerSecond());
 
 	for (int nx = 0; nx < map.GetHeight(); nx++)
 		for (int ny = 0; ny < map.GetWidth(); ny++)
@@ -252,10 +252,12 @@ void ConsoleBufferString::PrintDebugInfo(const Player& player, Map& map, FPS& _f
 
 	for (int i = 0; i < gameSpace.GetSize(); i++)
 	{
-		screen[((int)(gameSpace[i]->GetPosition_X()) + 1) * _console_width + (int)(gameSpace[i]->GetPosition_Y())] = gameSpace[i]->GetSymbol();
+		screen[((int)(gameSpace[i]->GetPosition_X()) + 1) * _console_width 
+			+ (int)(gameSpace[i]->GetPosition_Y())] = gameSpace[i]->GetSymbol();
 	}
 
-	screen[((int)(player.GetPosition_X()) + 1) * _console_width + (int)(player.GetPosition_Y())] = 'P';
+	screen[((int)(player.GetPosition_X()) + 1) * _console_width 
+		+ (int)(player.GetPosition_Y())] = 'P';
 
 	screen[_size - 1] = '\0';	
 }
@@ -268,15 +270,16 @@ void ConsoleBufferString::PrintInventory(const Player& player)
 		{
 			if(i == 1 && (j & 1))
 				screen[(_console_height - i) * _console_width +
-				(_console_width / 2 - 21 / 2) + j] = ' ';
+				(_console_width / 2 - Player::max_Inventory_size - 1) + j] = ' ';
 			else
 			screen[(_console_height - i) * _console_width +
-				(_console_width / 2 - 21 / 2) + j] = 9608;
+				(_console_width / 2 - Player::max_Inventory_size - 1) + j] = 9608;
 		}
 	}
 	
 	screen[(_console_height - 2) * _console_width +
-	(_console_width / 2 - 19 / 2) + player.GetCurrentItemIndex() * 2] = 'V';
+	(_console_width / 2 - Player::max_Inventory_size) 
+		+ player.GetCurrentItemIndex() * 2] = 'V';
 
 	if (player.GetInventorySize())
 	{
@@ -285,14 +288,42 @@ void ConsoleBufferString::PrintInventory(const Player& player)
 			if (player[i] == nullptr)
 			{
 				screen[(_console_height - 1) * _console_width +
-					(_console_width / 2 - 19 / 2) + i * 2] = ' ';
+					(_console_width / 2 - Player::max_Inventory_size) + i * 2]
+					= ' ';
 			}
 			else
 			{
 				screen[(_console_height - 1) * _console_width +
-					(_console_width / 2 - 19 / 2) + i * 2] = player[i]->GetSymbol();
+					(_console_width / 2 - Player::max_Inventory_size) + i * 2] 
+					= player[i]->GetSymbol();
 			}
 		}
 		
 	}
+}
+
+void ConsoleBufferString::PrintGameOver()
+{
+	string gm = "Game Over, press Ecsape...";
+
+	for (int i = 0; i < gm.size(); i++)
+	{
+		screen[(_console_height / 2) * _console_width +
+			(_console_width / 2 - (gm.size() / 2)) + i] = gm[i];
+	}	
+
+	WriteInBuffer();
+}
+
+void ConsoleBufferString::ClearScrean()
+{
+	for (size_t i = 0; i < _console_height; i++)
+	{
+		for (size_t j = 0; j < _console_width; j++)
+		{
+			screen[i * _console_width + j] = ' ';
+		}
+	}
+
+	WriteInBuffer();
 }

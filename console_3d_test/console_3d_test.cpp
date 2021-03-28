@@ -7,27 +7,28 @@ int main()
     Set<string> game_space;
     
 
-    game_space.Add("###################"); //0
-    game_space.Add("#                 #"); //1
-    game_space.Add("#                 #"); //2
-    game_space.Add("#                 #"); //3
-    game_space.Add("#        ##       #"); //4
-    game_space.Add("#        ##       #"); //5
-    game_space.Add("#                 #"); //6
-    game_space.Add("#                 #"); //7
-    game_space.Add("#           #######"); //8
-    game_space.Add("#                 #"); //9
-    game_space.Add("#######      ######"); //10
-    game_space.Add("#     #           #"); //11
-    game_space.Add("#  ####           #"); //12
-    game_space.Add("#                 #"); //13
-    game_space.Add("#                 #"); //14
-    game_space.Add("###################"); //15
+    game_space.Add("###################");//| 0
+    game_space.Add("#                 #");//| 1
+    game_space.Add("#                 #");//| 2
+    game_space.Add("#                 #");//| 3
+    game_space.Add("#        ##       #");//| 4
+    game_space.Add("#        ##       #");//| 5
+    game_space.Add("#                 #");//| 6
+    game_space.Add("#                 #");//| 7
+    game_space.Add("#           #######");//| 8
+    game_space.Add("#                 #");//| 9
+    game_space.Add("#######      ######");//| 10
+    game_space.Add("#     #           #");//| 11
+    game_space.Add("#  ####           #");//| 12
+    game_space.Add("#                 #");//| 13
+    game_space.Add("#                 #");//V 14
+    game_space.Add("###################");//x 15
+                  //-------------------->y
                   //0123456789012345678
                   //          1
     Map map(game_space);
-    Player player(13.5f, 8.86f, 0.0f, 0.0f, 60.0f, 1.5f, 73.0f, 1.5f, 30.0f, 0.25f,
-        2.0f, map, 'P', 100);
+    Player player(11.5f, 13.6f, 0.0f, 0.0f, 60.0f, 1.5f, 25.0f, 1.5f, 30.0f, 0.25f,
+        2.0f, map, 'P', 100.0f);
 
     GameSpace gameSpace;
 
@@ -38,10 +39,11 @@ int main()
     Rect rect;
     Triangle triangle;
     Rhombus rhombus;
-    Rhombus rhombus1;
+    Triangle triangle1;
     Rhombus rhombus2;
     Rhombus rhombus3;
-    Rhombus rhombus4;
+    MedKit medkit;
+   
 
     gameSpace.AddObject(&circle);
     gameSpace.AddObject(&circle2);
@@ -50,10 +52,10 @@ int main()
     gameSpace.AddObject(&rect);
     gameSpace.AddObject(&triangle);
     gameSpace.AddObject(&rhombus);
-    gameSpace.AddObject(&rhombus1);
+    gameSpace.AddObject(&triangle1);
     gameSpace.AddObject(&rhombus2);
     gameSpace.AddObject(&rhombus3);
-    gameSpace.AddObject(&rhombus4);
+    gameSpace.AddObject(&medkit);
 
     vector<pair<float, float>> coords;
     coords.push_back({ 6.9f , 9.9f });
@@ -63,7 +65,7 @@ int main()
     coords.push_back({ 1.5f , 9.5f });
     coords.push_back({ 2.5f , 3.5f });
     coords.push_back({ 4.5f , 16.5f });
-    coords.push_back({ 12.5f, 6.5f });
+    coords.push_back({ 12.5f, 9.5f });
     coords.push_back({ 9.5f , 14.5f });
     coords.push_back({ 7.5f , 16.5f });
     coords.push_back({ 1.5f , 17.5f });
@@ -77,11 +79,16 @@ int main()
             }
             catch (PositionError& exp)
             {
-                cout << i << ") " << typeid(*(gameSpace[i])).name() << " " << exp.what() << ", press any key...";
+                cerr << i << ") " << typeid(*(gameSpace[i])).name() << " " << exp.what() << ", press any key...";
                 _getch();
             }
         }
-       
+
+        WeakTrap trap;
+        trap.Initialize(13.7, 16.7, map, 0.5, 1);
+        trap.Reverse(map);
+        gameSpace.AddObject(&trap);
+
 
     FPS _fps;
 
@@ -94,9 +101,15 @@ int main()
 	    _fps.current_Calc_Period();
 	    buffer->Render(map, player, _fps, gameSpace);
 	    if (!player.Controle(map, _fps, gameSpace)) break;
+        if (player.GetHP() <= 0.0f) break;
     }
     
-    _getch();
+    if (player.GetHP() <= 0.0f)
+    {
+        buffer->ClearScrean();
+        buffer->PrintGameOver();
+        while (!GetAsyncKeyState((unsigned short)Player::BUTTONS::Ecs)) {}
+    }
 
     /*HANDLE hStdout, hNewScreenBuffer;
     SMALL_RECT srctReadRect;

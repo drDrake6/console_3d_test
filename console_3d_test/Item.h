@@ -12,8 +12,6 @@ public:
 	float GetWidth() const;
 	bool InRenderArea(float x, float y) const override;
 	bool InCollisionArea(float x, float y) const override;
-	/*void Initialize(float positionX, float positionY, const Map& map, float collision_area,
-		float render_area, char symbol) override;*/
 
 	virtual ~Item() = 0 {};
 };

@@ -100,7 +100,7 @@ void Entity::SetExeleration(float exeleration)
 	}
 }
 
-void Entity::SetHP(int HP)
+void Entity::SetHP(float HP)
 {
 	if (HP > 0 && HP <= 100)
 		_HP = HP;
@@ -108,7 +108,24 @@ void Entity::SetHP(int HP)
 		throw out_of_range("error, HP is too few or too big");
 }
 
-	float Entity::GetConorOfView() const
+float Entity::GetHP() const
+{
+	return _HP;
+}
+
+void Entity::GetIntoTrap(GameSpace& gamespace, FPS& _fps)
+{
+	for (auto i = 0; i < gamespace.GetSize(); i++)
+	{
+		Trap* trap = dynamic_cast<Trap*>(gamespace[i]);
+		if (trap && trap->InCollisionArea(_positionX, _positionY))
+		{
+			_HP -= (trap->GetDamage() * _fps.GetSecondsPerFrame());
+		}
+	}
+}
+
+float Entity::GetConorOfView() const
 	{
 		return _conor_of_view;
 	}
