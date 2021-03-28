@@ -28,6 +28,13 @@ void ConsoleBufferString::VerticalLine::PrintObject()
 
 void ConsoleBufferString::VerticalLine::PrintCircle()
 {
+	Door* door = dynamic_cast<Door*>(&_object);
+	if (door)
+	{
+		PrintDoor();
+		return;
+	}
+
 	float size = 0.3f;
 	float radius = (_self->_console_height / 2) * size;
 	float center = _object.GetPosition_X();
@@ -85,6 +92,13 @@ void ConsoleBufferString::VerticalLine::PrintRectangle()
 
 void ConsoleBufferString::VerticalLine::PrintTriangle()
 {
+	Door* door = dynamic_cast<Door*>(&_object);
+	if (door)
+	{
+		PrintDoor();
+		return;
+	}
+
 	float size = 0.2f;
 	float h = (_self->_console_height / 2.0f) * size;
 	float x = (abs(_object.GetPosition_X() - _position_ray_x)) * (h / size);
@@ -120,6 +134,13 @@ void ConsoleBufferString::VerticalLine::PrintTriangle()
 
 void ConsoleBufferString::VerticalLine::PrintRhombus()
 {
+	Door* door = dynamic_cast<Door*>(&_object);
+	if (door)
+	{
+		PrintDoor();
+		return;
+	}
+
 	float size = 0.25f;
 	float h = ((float)(_self->_console_height) / 2.0f) * size;
 	float x = (abs(_object.GetPosition_X() - _position_ray_x)) * (h / size);
@@ -178,6 +199,30 @@ void ConsoleBufferString::VerticalLine::PrintMedKit()
 		{
 			_self->screen[j * _self->_console_width + _current_rays_amount]
 				= (wchar_t)_object.GetSymbol();
+#ifdef DEBUG
+			WriteConsoleOutputCharacter(_self->hConsole, _self->screen, _self->_size, _self->FirstCell, &(_self->dwBytesWritten));
+#endif
+		}
+		else if (j > lowest_y)
+		{
+			return;
+		}
+	}
+}
+
+void ConsoleBufferString::VerticalLine::PrintDoor()
+{
+	int height = (_self->_console_height);
+	int highest_y = (float)(_self->_console_height / 2.0f)
+		- (float)height / _ray_size;
+	int lowest_y = _self->_console_height - highest_y;
+
+	for (int j = 0; j < _self->_console_height; j++)
+	{
+		if (j >= highest_y && j <= lowest_y)
+		{
+			_self->screen[j * _self->_console_width
+				+ _current_rays_amount] = (wchar_t)_object.GetSymbol();
 #ifdef DEBUG
 			WriteConsoleOutputCharacter(_self->hConsole, _self->screen, _self->_size, _self->FirstCell, &(_self->dwBytesWritten));
 #endif

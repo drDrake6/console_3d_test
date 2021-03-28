@@ -227,8 +227,8 @@ void ConsoleBufferString::Render(Map& map, Player& player, FPS& _fps, GameSpace&
 		}		
 	}
 
-		PrintDebugInfo(player, map, _fps, gameSpace);
-		PrintInventory(player);
+		//PrintDebugInfo(player, map, _fps, gameSpace);
+		PrintStat(map, player);
 
 #ifndef DEBUG
 		WriteInBuffer();
@@ -262,8 +262,31 @@ void ConsoleBufferString::PrintDebugInfo(const Player& player, Map& map,
 	screen[_size - 1] = '\0';	
 }
 
-void ConsoleBufferString::PrintInventory(const Player& player)
+void ConsoleBufferString::PrintStat(Map& map, const Player& player)
 {
+	for (size_t i = 0; i < 2; i++)
+	{
+		for (size_t j = 0; j < 2; j++)
+		{
+			screen[(_console_height - _console_height / 2 - i) * _console_width 
+				+ _console_width / 2 + j] = ';';
+		}
+	}
+
+	swprintf_s(screen, 11, L"HP: %3.2f", player.GetHP());
+
+	if (player.HasMap())
+	{
+		for (int nx = 0; nx < map.GetHeight(); nx++)
+			for (int ny = 0; ny < map.GetWidth(); ny++)
+			{
+				screen[(nx + 1) * _console_width + ny] = map[nx][ny];
+			}
+
+		screen[((int)(player.GetPosition_X()) + 1) * _console_width
+			+ (int)(player.GetPosition_Y())] = 'P';
+	}
+
 	for (size_t i = 2; i > 0; i--)
 	{
 		for (size_t j = 0; j < 21; j++)

@@ -22,6 +22,8 @@ using namespace std;
 #include "Bilding.h"
 #include "Door.h"
 #include "CircDoor.h"
+#include "RombDoor.h"
+#include "TrianDoor.h"
 #include "Trap.h"
 #include "WeakTrap.h"
 #include "MediumTrap.h"

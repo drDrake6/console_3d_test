@@ -14,6 +14,10 @@ Player::Player(float x, float y, float collision_radius, float render_area,
 
 bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 {
+
+	float previousX = _positionX;
+	float previousY = _positionY;
+
 	float walk_speed;
 
 	if (GetAsyncKeyState((unsigned short)BUTTONS::SHIFT))
@@ -211,6 +215,12 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 			}
 		}
 
+		if (CollideWithBuilding(_positionX, _positionY, gameSpace))
+		{
+			_positionX = previousX;
+			_positionY = previousY;
+		}
+
 		PicItem(gameSpace);
 	}
 
@@ -224,6 +234,11 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 	if (GetAsyncKeyState((unsigned short)BUTTONS::Drop) & 0x1)
 	{
 		DropItem(map, gameSpace);
+	}
+
+	if (GetAsyncKeyState((unsigned short)BUTTONS::Interact) & 0x1)
+	{
+		Interact(map, gameSpace);
 	}
 
 	ChoseItem();
@@ -265,17 +280,44 @@ void Player::DropItem(Map& map, GameSpace& gameSpace)
 	int size = Inventory.size() - 1;
 	float current_view_conor = _conor_of_view / 2 + _view_position;
 
-	float drop_distanceX = cosf(current_view_conor) * 1.0f;
-	float drop_distanceY = sinf(current_view_conor) * 1.0f;
+	float drop_distanceX;
+	float drop_distanceY;
 
-	if (map[_positionX + drop_distanceX][_positionY + drop_distanceY] == '#'
-		|| size < current_item || Inventory[current_item] == nullptr)
+	if(size < current_item || Inventory[current_item] == nullptr)
 		return;
+
+	for (float i = 0; i < 1.0f; i += 0.1f)
+	{
+		drop_distanceX = cosf(current_view_conor) * i;
+		drop_distanceY = sinf(current_view_conor) * i;
+		
+		if (map[_positionX + drop_distanceX][_positionY + drop_distanceY] == '#'
+			|| CollideWithBuilding(_positionX + drop_distanceX, _positionY
+				+ drop_distanceY, gameSpace))
+		{
+			auto it = Inventory.begin() + current_item;
+
+			drop_distanceX = cosf(current_view_conor) * (i - (*it)->GetCollision_distanse() / 2);
+			drop_distanceY = sinf(current_view_conor) * (i - (*it)->GetCollision_distanse() / 2);
+			
+			(*it)->SetPosition(_positionX + drop_distanceX, _positionY + drop_distanceY, map);
+			gameSpace.AddObject(*it);
+			if((*it)->GetSymbol() == '=')
+				_HasMap = false;
+			Inventory[current_item] = nullptr;
+
+			return;
+		}
+	}
 
 	auto it = Inventory.begin() + current_item;
 	(*it)->SetPosition(_positionX + drop_distanceX, _positionY + drop_distanceY, map);
 	gameSpace.AddObject(*it);
+	if((*it)->GetSymbol() == '=')
+		_HasMap = false;
 	Inventory[current_item] = nullptr;
+
+	return;
 }
 
 void Player::PicItem(GameSpace& gameSpace)
@@ -286,6 +328,10 @@ void Player::PicItem(GameSpace& gameSpace)
 	{
 		if(PutItemToInventory(item))
 			gameSpace.DeleteObject(index);
+		if (item->GetSymbol() == '=')
+		{
+			_HasMap = true;
+		}
 	}	
 }
 
@@ -357,27 +403,102 @@ bool Player::IsMoving() const
 		return false;
 }
 
-void Player::Regen()
+int Player::IndexOfNecessarItem(char symbol) const
 {
 	for (auto i = Inventory.begin(); i != Inventory.end(); i++)
 	{
-		if ((*i) && (*i)->GetSymbol() == '+')
+		if ((*i) && (*i)->GetSymbol() == symbol)
+		{			
+			return  i - Inventory.begin();
+		}
+	}
+
+	return -1;
+}
+
+void Player::Regen()
+{
+	int ItemIndex = IndexOfNecessarItem('+');
+
+	if (ItemIndex != -1)
+	{
+		MedKit* mk = dynamic_cast<MedKit*>((Inventory[ItemIndex]));
+		if (_HP == 100.0f)
 		{
-			MedKit* mk = dynamic_cast<MedKit*>((*i));
-			if (_HP == 100.0f)
-			{
-				return;
-			}
-			else if (_HP + mk->GetRegen() <= 100.0f)
-			{
-				_HP += mk->GetRegen();
-			}			
-			else
-			{
-				_HP = 100.0f;
-			}
-			(*i) = nullptr;
+			return;
+		}
+		else if (_HP + mk->GetRegen() <= 100.0f)
+		{
+			_HP += mk->GetRegen();
+		}
+		else
+		{
+			_HP = 100.0f;
+		}
+		delete Inventory[ItemIndex];
+		Inventory[ItemIndex] = nullptr;
+	}
+
+	return;
+}
+
+int Player::CollideWithDoor(float x, float y, GameSpace& gamespace)
+{
+	for (auto i = 0; i < gamespace.GetSize(); i++)
+	{
+		Door* door = dynamic_cast<Door*>(gamespace[i]);
+		if (door && door->InRenderArea(x, y))
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+void Player::Interact(Map& map, GameSpace& gameSpace)
+{
+	float current_view_conor = _conor_of_view / 2 + _view_position;
+
+	float interact_distanceX;
+	float interact_distanceY;
+
+	int indexOfDoor;
+
+	for (float i = 0; i < 1.0f; i += 0.1f)
+	{
+		interact_distanceX = cosf(current_view_conor) * i;
+		interact_distanceY = sinf(current_view_conor) * i;
+
+		indexOfDoor = CollideWithDoor(_positionX + interact_distanceX, _positionY
+			+ interact_distanceY, gameSpace);
+
+		if (indexOfDoor != -1)
+		{			
+			InteractWithDoor(indexOfDoor, gameSpace, map);
 			return;
 		}
 	}
+}
+
+void Player::InteractWithDoor(int indexOfDoor, GameSpace& gameSpace, Map& map)
+{
+	
+	Door* door = dynamic_cast<Door*>(gameSpace[indexOfDoor]);
+	if (door)
+	{
+		int ItemIndex = IndexOfNecessarItem(door->GetSymbol());
+		if (ItemIndex != -1)
+		{
+			door->Reverse(map);
+			delete Inventory[ItemIndex];
+			Inventory[ItemIndex] = nullptr;
+		}			
+	}		
+	return;
+}
+
+bool Player::HasMap() const
+{
+	return _HasMap;
 }

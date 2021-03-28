@@ -32,30 +32,30 @@ int main()
 
     GameSpace gameSpace;
 
-    Circle circle ;
-    Circle circle2;
-    Circle circle3;
-    Circle circle4;
-    Rect rect;
-    Triangle triangle;
-    Rhombus rhombus;
-    Triangle triangle1;
-    Rhombus rhombus2;
-    Rhombus rhombus3;
-    MedKit medkit;
+    Circle* circle  = new Circle;
+    Circle* circle2 = new Circle;
+    Circle* circle3 = new Circle;
+    Circle* circle4 = new Circle;
+    Rect* rect = new Rect;
+    Triangle* triangle = new Triangle;
+    Rhombus* rhombus = new Rhombus;
+    Triangle* triangle1 = new Triangle;
+    Rhombus* rhombus2 = new Rhombus;
+    Rhombus* rhombus3 = new Rhombus;
+    MedKit* medkit = new MedKit;
    
 
-    gameSpace.AddObject(&circle);
-    gameSpace.AddObject(&circle2);
-    gameSpace.AddObject(&circle3);
-    gameSpace.AddObject(&circle4);
-    gameSpace.AddObject(&rect);
-    gameSpace.AddObject(&triangle);
-    gameSpace.AddObject(&rhombus);
-    gameSpace.AddObject(&triangle1);
-    gameSpace.AddObject(&rhombus2);
-    gameSpace.AddObject(&rhombus3);
-    gameSpace.AddObject(&medkit);
+    gameSpace.AddObject(circle);
+    gameSpace.AddObject(circle2);
+    gameSpace.AddObject(circle3);
+    gameSpace.AddObject(circle4);
+    gameSpace.AddObject(rect);
+    gameSpace.AddObject(triangle);
+    gameSpace.AddObject(rhombus);
+    gameSpace.AddObject(triangle1);
+    gameSpace.AddObject(rhombus2);
+    gameSpace.AddObject(rhombus3);
+    gameSpace.AddObject(medkit);
 
     vector<pair<float, float>> coords;
     coords.push_back({ 6.9f , 9.9f });
@@ -84,10 +84,29 @@ int main()
             }
         }
 
-        WeakTrap trap;
-        trap.Initialize(13.7, 16.7, map, 0.5, 1);
-        trap.Reverse(map);
-        gameSpace.AddObject(&trap);
+        WeakTrap wtrap;
+        wtrap.Initialize(1.0f, 3.1f, map, 0.5, 0);
+        gameSpace.AddObject(&wtrap);
+
+        MediumTrap mtrap;
+        mtrap.Initialize(1.0f, 5.1f, map, 0.5, 0);
+        gameSpace.AddObject(&mtrap);
+
+        StrongTrap strap;
+        strap.Initialize(1.0f, 7.1f, map, 0.5, 0);
+        gameSpace.AddObject(&strap);
+
+        CircDoor circdoor;
+        circdoor.Initialize(13.7, 14.7, map, 0.5, 1);
+        gameSpace.AddObject(&circdoor);
+
+        RombDoor rombdoor;
+        rombdoor.Initialize(13.7, 12.7, map, 0.5, 1);
+        gameSpace.AddObject(&rombdoor);
+
+        TrianDoor triandoor;
+        triandoor.Initialize(13.7, 10.7, map, 0.5, 1);
+        gameSpace.AddObject(&triandoor);
 
 
     FPS _fps;
@@ -95,6 +114,8 @@ int main()
     ConsoleBufferString* buffer = ConsoleBufferString::Instance(_FULL_SCREAN_);
     buffer->HideCursor();
     buffer->NotHighLightConsole();
+
+    bool HasMap = false;
     
     while (true)
     {

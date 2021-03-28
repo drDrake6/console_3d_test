@@ -15,6 +15,8 @@ class ConsoleBufferString
 	const COORD FirstCell = { 0, 0 };
 	DWORD dwBytesWritten = 0;
 	static ConsoleBufferString* _self;		
+	bool PlayerHasMap = false;
+
 	ConsoleBufferString(bool full_screan);
 	ConsoleBufferString(const ConsoleBufferString& orig) = delete;
 	ConsoleBufferString(ConsoleBufferString&& orig) = delete;
@@ -48,6 +50,7 @@ class ConsoleBufferString
 		void PrintTriangle();
 		void PrintRhombus();
 		void PrintMedKit();
+		void PrintDoor();
 		void PrintTrap();
 		void PrintWeakTrap();
 		void PrintMediumTrap();
@@ -75,7 +78,7 @@ public:
 	void SetConsoleBufferMode();
 	void Render(Map& map, Player& player, FPS& _fps, GameSpace& gameSpace);
 	void PrintDebugInfo(const Player& player, Map& map, FPS& _fps, const GameSpace& gameSpace);
-	void PrintInventory(const Player& player);
+	void PrintStat(Map& map, const Player& player);
 	void PrintGameOver();
 	void ClearScrean();
 };

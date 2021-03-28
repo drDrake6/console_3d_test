@@ -6,6 +6,7 @@ class Player final : public Entity
 	vector<Item*> Inventory;
 
 	int current_item;
+	bool _HasMap = false;
 
 	void Initialize(float positionX, float positionY, const Map& map, float collision_area,
 		float render_area) override {};
@@ -44,6 +45,11 @@ public:
 	Item* operator[](int index) const;
 	void ChoseItem();
 	bool IsMoving() const;
+	int IndexOfNecessarItem(char symbol) const;
 	void Regen();
+	static int CollideWithDoor(float x, float y, GameSpace& gamespace);
+	void Interact(Map& map, GameSpace& gameSpace);
+	void InteractWithDoor(int indexOfDoor, GameSpace& gameSpace, Map& map);
+	bool HasMap() const;
 };
 
