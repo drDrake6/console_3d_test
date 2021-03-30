@@ -19,7 +19,7 @@ using namespace std;
 #include "GameSpace.h"
 #include "Item.h"
 #include "Entity.h"
-#include "Bilding.h"
+#include "Building.h"
 #include "Door.h"
 #include "CircDoor.h"
 #include "RombDoor.h"

@@ -61,8 +61,6 @@ class ConsoleBufferString
 
 	stack<VerticalLine> DetectedObjects;
 
-	//void PrintVerticalLine(VerticalLine vertical_line);
-
 public:
 	void HideCursor();
 	int GetConsoleWidth();

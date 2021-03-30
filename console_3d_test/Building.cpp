@@ -1,12 +1,12 @@
 #include "Headers.h"
 
-Bilding::Bilding()
+Building::Building()
 {
 	_symbol = 0;
 	width = 0;
 }
 
-Bilding::Bilding(char symbol, float positionX, float positionY, const Map& map,
+Building::Building(char symbol, float positionX, float positionY, const Map& map,
 	float collision_area, bool IsParallelToX)
 {
 	_symbol = symbol;
@@ -15,12 +15,12 @@ Bilding::Bilding(char symbol, float positionX, float positionY, const Map& map,
 	SetPosition(map);
 }
 
-float Bilding::GetWidth() const
+float Building::GetWidth() const
 {
 	return width;
 }
 
-void Bilding::BuildInit(char symbol, float positionX, float positionY, const Map& map, float collision_area, bool IsParallelToX)
+void Building::BuildInit(char symbol, float positionX, float positionY, const Map& map, float collision_area, bool IsParallelToX)
 {
 	GameObject::SetPosition(positionX, positionY, map);
 	SetCollision_distanse(collision_area);
@@ -29,7 +29,7 @@ void Bilding::BuildInit(char symbol, float positionX, float positionY, const Map
 	SetPosition(map);
 }
 
-bool Bilding::InRenderArea(float x, float y) const
+bool Building::InRenderArea(float x, float y) const
 {
 	if (x >= _positionX - _render_area &&
 		x <= _positionX + _render_area &&
@@ -40,7 +40,7 @@ bool Bilding::InRenderArea(float x, float y) const
 		return false;
 }
 
-bool Bilding::InCollisionArea(float x, float y) const
+bool Building::InCollisionArea(float x, float y) const
 {
 	if (_IsParallelToX)
 	{
@@ -83,19 +83,19 @@ bool Bilding::InCollisionArea(float x, float y) const
 	
 }
 
-bool Bilding::IsParallelToX()
+bool Building::IsParallelToX()
 {
 	return _IsParallelToX;
 }
 
-void Bilding::Reverse(const Map& map)
+void Building::Reverse(const Map& map)
 {
 	_IsParallelToX = !_IsParallelToX;
 
 	SetPosition(map);
 }
 
-void Bilding::SetPosition(const Map& map)
+void Building::SetPosition(const Map& map)
 {
 	if (_IsParallelToX)
 	{

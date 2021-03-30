@@ -142,10 +142,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bilding.cpp" />
+    <ClCompile Include="Building.cpp" />
     <ClCompile Include="CircDoor.cpp" />
     <ClCompile Include="Circle.cpp" />
-    <ClCompile Include="Collision_checker.cpp" />
     <ClCompile Include="ConsoleBufferString.cpp" />
     <ClCompile Include="console_3d_test.cpp" />
     <ClCompile Include="Door.cpp" />
@@ -170,10 +169,9 @@
     <ClCompile Include="WeakTrap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bilding.h" />
+    <ClInclude Include="Building.h" />
     <ClInclude Include="CircDoor.h" />
     <ClInclude Include="Circle.h" />
-    <ClInclude Include="Collision_checker.h" />
     <ClInclude Include="ConsoleBufferString.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Entity.h" />

@@ -27,7 +27,7 @@ int main()
                   //0123456789012345678
                   //          1
     Map map(game_space);
-    Player player(11.5f, 13.6f, 0.0f, 0.0f, 60.0f, 1.5f, 25.0f, 1.5f, 30.0f, 0.25f,
+    Player player(3.5f, 11.6f, 0.0f, 0.0f, 60.0f, 2.25f, 25.0f, 30.0f, 0.25f,
         2.0f, map, 'P', 100.0f);
 
     GameSpace gameSpace;
@@ -36,9 +36,9 @@ int main()
     Circle* circle2 = new Circle;
     Circle* circle3 = new Circle;
     Circle* circle4 = new Circle;
-    Rect* rect = new Rect;
+    Minimap* rect = new Minimap;
     Triangle* triangle = new Triangle;
-    Rhombus* rhombus = new Rhombus;
+    MedKit* medkit1 = new MedKit;
     Triangle* triangle1 = new Triangle;
     Rhombus* rhombus2 = new Rhombus;
     Rhombus* rhombus3 = new Rhombus;
@@ -51,7 +51,7 @@ int main()
     gameSpace.AddObject(circle4);
     gameSpace.AddObject(rect);
     gameSpace.AddObject(triangle);
-    gameSpace.AddObject(rhombus);
+    gameSpace.AddObject(medkit1);
     gameSpace.AddObject(triangle1);
     gameSpace.AddObject(rhombus2);
     gameSpace.AddObject(rhombus3);
@@ -85,15 +85,15 @@ int main()
         }
 
         WeakTrap wtrap;
-        wtrap.Initialize(1.0f, 3.1f, map, 0.5, 0);
+        wtrap.Initialize(6.1f, 1.0f, map, 0.5, 1);
         gameSpace.AddObject(&wtrap);
 
         MediumTrap mtrap;
-        mtrap.Initialize(1.0f, 5.1f, map, 0.5, 0);
+        mtrap.Initialize(4.1f, 1.0f, map, 0.5, 1);
         gameSpace.AddObject(&mtrap);
 
         StrongTrap strap;
-        strap.Initialize(1.0f, 7.1f, map, 0.5, 0);
+        strap.Initialize(2.1f, 1.0f, map, 0.5, 1);
         gameSpace.AddObject(&strap);
 
         CircDoor circdoor;
@@ -105,7 +105,7 @@ int main()
         gameSpace.AddObject(&rombdoor);
 
         TrianDoor triandoor;
-        triandoor.Initialize(13.7, 10.7, map, 0.5, 1);
+        triandoor.Initialize(9.7, 13.3, map, 0.5, 1);
         gameSpace.AddObject(&triandoor);
 
 

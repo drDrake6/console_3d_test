@@ -1,5 +1,5 @@
 #pragma once
-class Bilding : public GameObject
+class Building : public GameObject
 {
 protected:
 	float width;
@@ -8,8 +8,8 @@ protected:
 	void Initialize(float positionX, float positionY, const Map& map, float collision_area,
 		float render_area) override {};
 public:
-	Bilding();
-	Bilding(char symbol, float positionX, float positionY, const Map& map,
+	Building();
+	Building(char symbol, float positionX, float positionY, const Map& map,
 		float collision_area, bool IsParallelToX);
 
 	float GetWidth() const;
@@ -25,6 +25,6 @@ public:
 	void Reverse(const Map& map);
 	void SetPosition(const Map& map);
 
-	virtual ~Bilding() = 0 {};
+	virtual ~Building() = 0 {};
 };
 

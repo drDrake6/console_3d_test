@@ -135,7 +135,7 @@ void ConsoleBufferString::SetConsoleBufferMode()
 		0, 
 		NULL, 
 		CONSOLE_TEXTMODE_BUFFER, 
-		NULL); // Буфер экрана
+		NULL);
 }
 
 void ConsoleBufferString::Render(Map& map, Player& player, FPS& _fps, GameSpace& gameSpace)
@@ -197,12 +197,18 @@ void ConsoleBufferString::Render(Map& map, Player& player, FPS& _fps, GameSpace&
 
 					sort(p.begin(), p.end());
 
-					if (acos(p.at(0).second) < conor_per_ray / 2)
+					if (acos(p.at(0).second) <= conor_per_ray / 2)
 						Is_wallblock_conor = true;
-					if (acos(p.at(1).second) < conor_per_ray / 2)
+					if (acos(p.at(1).second) <= conor_per_ray / 2)
 						Is_wallblock_conor = true;
-					if (acos(p.at(2).second) < conor_per_ray / 2)
-						Is_wallblock_conor = true;
+
+					if (trunc(player.GetPosition_X()) != trunc(Point_On_RayX)
+						&& trunc(player.GetPosition_Y()) != trunc(Point_On_RayY))
+					{
+						if (acos(p.at(2).second) <= conor_per_ray / 2)
+							Is_wallblock_conor = true;
+					}
+					
 
 					VerticalLine::PrintWall(ray_size, i, Is_wallblock_conor);
 
@@ -227,8 +233,9 @@ void ConsoleBufferString::Render(Map& map, Player& player, FPS& _fps, GameSpace&
 		}		
 	}
 
+	    PrintStat(map, player);
 		//PrintDebugInfo(player, map, _fps, gameSpace);
-		PrintStat(map, player);
+		
 
 #ifndef DEBUG
 		WriteInBuffer();

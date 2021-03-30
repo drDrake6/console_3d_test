@@ -1,5 +1,5 @@
 #pragma once
-class Door : public Bilding
+class Door : public Building
 {
 public:
 	Door();

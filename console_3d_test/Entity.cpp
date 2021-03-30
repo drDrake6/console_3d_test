@@ -2,13 +2,12 @@
 
 Entity::Entity(float x, float y, float collision_distanse, float render_area, 
 	float conor_of_view, float view_position_increment, float view_position, 
-	float rotation_speed, float walk_speed, float deceleration, float exeleration, Map& map,
+	float walk_speed, float deceleration, float exeleration, Map& map,
 	char symbol, int HP) : GameObject(x, y, map, collision_distanse, render_area, symbol)
 {
 	SetConorOfView(conor_of_view);
 	SetViewPositionIncrement(view_position_increment);
 	SetViewPosition(view_position);
-	SetRotationSpeed(rotation_speed);
 	SetWalkSpeed(walk_speed);
 	SetDeceleration(deceleration);
 	SetExeleration(exeleration);
@@ -48,18 +47,6 @@ void Entity::SetViewPosition(float view_position)
 	else
 	{
 		_view_position = (60.0f * pi) / 180;
-	}
-}
-
-void Entity::SetRotationSpeed(float rotation_speed)
-{
-	if (rotation_speed > 0 && rotation_speed <= 10)
-	{
-		_rotation_speed = rotation_speed;
-	}
-	else
-	{
-		_rotation_speed = 1.0f;
 	}
 }
 
@@ -129,7 +116,7 @@ bool Entity::CollideWithBuilding(float x, float y, GameSpace& gamespace)
 {
 	for (auto i = 0; i < gamespace.GetSize(); i++)
 	{
-		Bilding* building = dynamic_cast<Bilding*>(gamespace[i]);
+		Building* building = dynamic_cast<Building*>(gamespace[i]);
 		if (building && building->InRenderArea(x, y))
 		{
 			return true;

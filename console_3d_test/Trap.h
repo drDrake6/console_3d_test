@@ -1,5 +1,5 @@
 #pragma once
-class Trap : public Bilding
+class Trap : public Building
 {
 protected:
 	float _damage;

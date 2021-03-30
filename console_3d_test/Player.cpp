@@ -4,9 +4,9 @@ const int Player::max_Inventory_size = 10;
 
 Player::Player(float x, float y, float collision_radius, float render_area, 
 	float conor_of_view, float view_position_increment, float view_position, 
-	float rotation_speed, float walk_speed, float deceleration, float exeleration, 
+	float walk_speed, float deceleration, float exeleration, 
 	Map& map, char symbol, float HP) : Entity(x, y, collision_radius, render_area, 
-	conor_of_view, view_position_increment, view_position, rotation_speed, walk_speed, 
+	conor_of_view, view_position_increment, view_position, walk_speed, 
 	deceleration, exeleration, map, symbol, HP)
 {	
 	current_item = 0;
@@ -38,17 +38,17 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 
 	if (GetAsyncKeyState((unsigned short)BUTTONS::LEFT) & 0x8000)
 	{
-		if (_view_position + _view_position_increment * _rotation_speed * _fps.GetSecondsPerFrame() >= pi * 2)
-			_view_position = _view_position + _view_position_increment * _rotation_speed * _fps.GetSecondsPerFrame() - pi * 2;
+		if (_view_position + _view_position_increment * _fps.GetSecondsPerFrame() >= pi * 2)
+			_view_position = _view_position + _view_position_increment * _fps.GetSecondsPerFrame() - pi * 2;
 		else
-			_view_position += _view_position_increment * _rotation_speed * _fps.GetSecondsPerFrame();
+			_view_position += _view_position_increment * _fps.GetSecondsPerFrame();
 	}
 	if (GetAsyncKeyState((unsigned short)BUTTONS::RIGHT) & 0x8000)
 	{
-		if (_view_position - _view_position_increment * _rotation_speed * _fps.GetSecondsPerFrame() < 0)
-			_view_position = _view_position_increment * _rotation_speed * _fps.GetSecondsPerFrame() + pi * 2;
+		if (_view_position - _view_position_increment *  _fps.GetSecondsPerFrame() < 0)
+			_view_position = _view_position_increment *  _fps.GetSecondsPerFrame() + pi * 2;
 		else
-			_view_position -= _view_position_increment * _rotation_speed * _fps.GetSecondsPerFrame();
+			_view_position -= _view_position_increment *  _fps.GetSecondsPerFrame();
 	}
 
 	if (IsMoving())
@@ -226,7 +226,7 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 
 	GetIntoTrap(gameSpace, _fps);
 
-	if (GetAsyncKeyState((unsigned short)BUTTONS::Regeneration))
+	if (GetAsyncKeyState((unsigned short)BUTTONS::Regeneration) & 0x1)
 	{
 		Regen();
 	}
@@ -368,25 +368,25 @@ void Player::ChoseItem()
 		GetAsyncKeyState(VK_NUMPAD8) || GetAsyncKeyState(0x38) ||
 		GetAsyncKeyState(VK_NUMPAD9) || GetAsyncKeyState(0x39))
 	{
-		if (GetAsyncKeyState(VK_NUMPAD0) || GetAsyncKeyState(0x31))
+		if (GetAsyncKeyState(VK_NUMPAD1) || GetAsyncKeyState(0x31))
 			current_item = 0;
-		else if (GetAsyncKeyState(VK_NUMPAD1) || GetAsyncKeyState(0x32))
+		else if (GetAsyncKeyState(VK_NUMPAD2) || GetAsyncKeyState(0x32))
 			current_item = 1;				  
-		else if (GetAsyncKeyState(VK_NUMPAD2) || GetAsyncKeyState(0x33))
+		else if (GetAsyncKeyState(VK_NUMPAD3) || GetAsyncKeyState(0x33))
 			current_item = 2;				 
-		else if (GetAsyncKeyState(VK_NUMPAD3) || GetAsyncKeyState(0x34))
+		else if (GetAsyncKeyState(VK_NUMPAD4) || GetAsyncKeyState(0x34))
 			current_item = 3;				
-		else if (GetAsyncKeyState(VK_NUMPAD4) || GetAsyncKeyState(0x35))
+		else if (GetAsyncKeyState(VK_NUMPAD5) || GetAsyncKeyState(0x35))
 			current_item = 4;				
-		else if (GetAsyncKeyState(VK_NUMPAD5) || GetAsyncKeyState(0x36))
+		else if (GetAsyncKeyState(VK_NUMPAD6) || GetAsyncKeyState(0x36))
 			current_item = 5;				 
-		else if (GetAsyncKeyState(VK_NUMPAD6) || GetAsyncKeyState(0x37))
+		else if (GetAsyncKeyState(VK_NUMPAD7) || GetAsyncKeyState(0x37))
 			current_item = 6;				
-		else if (GetAsyncKeyState(VK_NUMPAD7) || GetAsyncKeyState(0x38))
+		else if (GetAsyncKeyState(VK_NUMPAD8) || GetAsyncKeyState(0x38))
 			current_item = 7;				
-		else if (GetAsyncKeyState(VK_NUMPAD8) || GetAsyncKeyState(0x39))
+		else if (GetAsyncKeyState(VK_NUMPAD9) || GetAsyncKeyState(0x39))
 			current_item = 8;				
-		else if (GetAsyncKeyState(VK_NUMPAD9) || GetAsyncKeyState(0x30))
+		else if (GetAsyncKeyState(VK_NUMPAD0) || GetAsyncKeyState(0x30))
 			current_item = 9;
 	}
 
@@ -437,6 +437,7 @@ void Player::Regen()
 		}
 		delete Inventory[ItemIndex];
 		Inventory[ItemIndex] = nullptr;
+		return;
 	}
 
 	return;

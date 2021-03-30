@@ -1,16 +1,16 @@
 #include "Headers.h"
 
-Rect::Rect()
+Minimap::Minimap()
 {
 }
 
-Rect::Rect(float positionX, float positionY, const Map& map,
+Minimap::Minimap(float positionX, float positionY, const Map& map,
 	float collision_area, float render_area) : Item('=', positionX,
 		positionY, map, collision_area, render_area)
 {
 }
 
-void Rect::Initialize(float positionX, float positionY, const Map& map, 
+void Minimap::Initialize(float positionX, float positionY, const Map& map, 
 	float collision_area, float render_area)
 {
 	GameObject::Init(positionX, positionY, map, collision_area, render_area);
