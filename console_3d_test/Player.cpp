@@ -215,13 +215,16 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 			}
 		}
 
-		if (CollideWithBuilding(_positionX, _positionY, gameSpace))
+		if (CollideWithBuilding(_positionX, _positionY, gameSpace) != -1)
 		{
 			_positionX = previousX;
 			_positionY = previousY;
 		}
 
 		PicItem(gameSpace);
+
+		if (CollideWithExit(gameSpace))
+			return false;
 	}
 
 	GetIntoTrap(gameSpace, _fps);
@@ -245,7 +248,7 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 
 	if (GetAsyncKeyState((unsigned short)BUTTONS::Ecs))
 	{
-		return 0;
+		exit(0);
 	}
 	else
 	{
@@ -293,7 +296,7 @@ void Player::DropItem(Map& map, GameSpace& gameSpace)
 		
 		if (map[_positionX + drop_distanceX][_positionY + drop_distanceY] == '#'
 			|| CollideWithBuilding(_positionX + drop_distanceX, _positionY
-				+ drop_distanceY, gameSpace))
+				+ drop_distanceY, gameSpace) != -1)
 		{
 			auto it = Inventory.begin() + current_item;
 
@@ -455,6 +458,20 @@ int Player::CollideWithDoor(float x, float y, GameSpace& gamespace)
 	}
 
 	return -1;
+}
+
+bool Player::CollideWithExit(GameSpace& gamespace)
+{
+	for (auto i = 0; i < gamespace.GetSize(); i++)
+	{
+		Exit* building = dynamic_cast<Exit*>(gamespace[i]);
+		if (building && building->InCollisionArea(_positionX, _positionY))
+		{
+			return true;				
+		}
+	}
+
+	return false;
 }
 
 void Player::Interact(Map& map, GameSpace& gameSpace)

@@ -149,6 +149,7 @@
     <ClCompile Include="console_3d_test.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Exit.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameSpace.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Door.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Exeptions.h" />
+    <ClInclude Include="Exit.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameSpace.h" />

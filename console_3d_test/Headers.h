@@ -28,6 +28,7 @@ using namespace std;
 #include "WeakTrap.h"
 #include "MediumTrap.h"
 #include "StrongTrap.h"
+#include "Exit.h"
 #include "Circle.h"
 #include "Rectangle.h"
 #include "Triangle.h"

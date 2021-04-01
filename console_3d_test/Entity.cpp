@@ -112,18 +112,18 @@ void Entity::GetIntoTrap(GameSpace& gamespace, FPS& _fps)
 	}
 }
 
-bool Entity::CollideWithBuilding(float x, float y, GameSpace& gamespace)
+int Entity::CollideWithBuilding(float x, float y, GameSpace& gamespace)
 {
 	for (auto i = 0; i < gamespace.GetSize(); i++)
 	{
 		Building* building = dynamic_cast<Building*>(gamespace[i]);
 		if (building && building->InRenderArea(x, y))
 		{
-			return true;
+			return i;
 		}
 	}
 
-	return false;
+	return -1;
 }
 
 float Entity::GetConorOfView() const

@@ -7,7 +7,7 @@ MediumTrap::MediumTrap()
 MediumTrap::MediumTrap(float positionX, float positionY, const Map& map, 
 	float collision_area, float render_area, bool IsParallelToX_) :
 	Trap('T', positionX, positionY, map, collision_area, render_area,
-		IsParallelToX_, 10.0f)
+		IsParallelToX_, 40.0f)
 {
 }
 
@@ -15,5 +15,5 @@ void MediumTrap::Initialize(float positionX, float positionY, const Map& map, fl
 {
 	BuildInit('T', positionX, positionY, map,
 		collision_area, IsParallelToX);
-	_damage = 10.0f;
+	_damage = 40.0f;
 }

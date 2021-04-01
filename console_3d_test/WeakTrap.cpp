@@ -7,7 +7,7 @@ WeakTrap::WeakTrap()
 WeakTrap::WeakTrap(float positionX, float positionY, 
 const Map& map, float collision_area, float render_area, bool IsParallelToX_) :
 	Trap('T', positionX, positionY, map, collision_area, render_area,
-		IsParallelToX_, 5.0f)
+		IsParallelToX_, 20.0f)
 {
 }
 
@@ -15,5 +15,5 @@ void WeakTrap::Initialize(float positionX, float positionY, const Map& map, floa
 {
 	BuildInit('T', positionX, positionY, map,
 		collision_area, IsParallelToX);
-	_damage = 5.0f;
+	_damage = 20.0f;
 }

@@ -31,7 +31,7 @@
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AgABQAAADiIAAQERAAAAAiSAAAECAAFAQBAgAAIAQAQ=</HashCode>
+      <HashCode>AgABQAAADiIAAQERAAAAAiSACAECAQFAQBAgAAIAQAQ=</HashCode>
       <FileName>ConsoleBufferString.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -62,7 +62,7 @@
   <Class Name="Player" Collapsed="true">
     <Position X="0.5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>FCACAAAAACAAAwACAAAAEAAAIAEAAQMABCAAEwAAAIA=</HashCode>
+      <HashCode>FCACAAAAACAAAxACAAAAEAAAIAEAAQMABCAAEwAAAIA=</HashCode>
       <FileName>Player.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -76,9 +76,7 @@
         <Point X="5.082" Y="4.814" />
         <Point X="5.167" Y="4.814" Type="JumpStart" />
         <Point X="5.333" Y="4.814" Type="JumpEnd" />
-        <Point X="5.668" Y="4.814" />
-        <Point X="5.668" Y="4.918" />
-        <Point X="6.082" Y="4.918" />
+        <Point X="6.082" Y="4.814" />
         <Point X="6.082" Y="4.983" />
         <Point X="8.623" Y="4.983" />
         <Point X="8.623" Y="4.375" />
@@ -116,7 +114,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="GameSpace" Collapsed="true">
-    <Position X="5.75" Y="2" Width="1.5" />
+    <Position X="5.25" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAAQAAAAGAAAIAAAAABAEAAAAAAAACCAAAAAA=</HashCode>
       <FileName>GameSpace.h</FileName>

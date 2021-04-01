@@ -25,7 +25,7 @@ public:
 	float GetHP() const;
 
 	void GetIntoTrap(GameSpace& gamespace, FPS& _fps);
-	static bool CollideWithBuilding(float x, float y, GameSpace& gamespace);
+	static int CollideWithBuilding(float x, float y, GameSpace& gamespace);
 
 	float GetConorOfView() const;
 	float GetView_Position() const;

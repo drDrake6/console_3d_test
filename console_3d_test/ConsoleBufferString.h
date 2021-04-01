@@ -55,6 +55,7 @@ class ConsoleBufferString
 		void PrintWeakTrap();
 		void PrintMediumTrap();
 		void PrintStrongTrap();
+		void PrintExit();
 
 		static void PrintWall(float ray_size, int current_rays_amount, bool Is_wallblock_conor);
 	};
@@ -78,5 +79,7 @@ public:
 	void PrintDebugInfo(const Player& player, Map& map, FPS& _fps, const GameSpace& gameSpace);
 	void PrintStat(Map& map, const Player& player);
 	void PrintGameOver();
+	void PrintWin();
 	void ClearScrean();
+	void PrintStringInCenter(string& str);
 };

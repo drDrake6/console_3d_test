@@ -49,6 +49,7 @@ public:
 	int IndexOfNecessarItem(char symbol) const;
 	void Regen();
 	static int CollideWithDoor(float x, float y, GameSpace& gamespace);
+	bool CollideWithExit(GameSpace& gamespace);
 	void Interact(Map& map, GameSpace& gameSpace);
 	void InteractWithDoor(int indexOfDoor, GameSpace& gameSpace, Map& map);
 	bool HasMap() const;

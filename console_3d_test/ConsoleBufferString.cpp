@@ -170,56 +170,52 @@ void ConsoleBufferString::Render(Map& map, Player& player, FPS& _fps, GameSpace&
 				DetectedObjects.push({ *object, Point_On_RayX, Point_On_RayY, ray_size, i, Is_wallblock_conor });
 			}
 
-			if (map[(short)Point_On_RayX][(short)Point_On_RayY] != ' ')
+			if (map[(short)Point_On_RayX][(short)Point_On_RayY] == '#')
 			{
-
-				if (map[(short)Point_On_RayX][(short)Point_On_RayY] == '#')
+				vector<pair<float, float>> p;
+				for (int wall_conor_y = 0; wall_conor_y < 2; wall_conor_y++)
 				{
-					vector<pair<float, float>> p;
-					for (int wall_conor_y = 0; wall_conor_y < 2; wall_conor_y++)
+					for (int wall_conor_x = 0; wall_conor_x < 2; wall_conor_x++)
 					{
-						for (int wall_conor_x = 0; wall_conor_x < 2; wall_conor_x++)
-						{
-							float vect_y = (int)Point_On_RayY + wall_conor_y - player.GetPosition_Y();
-							float vect_x = (int)Point_On_RayX + wall_conor_x - player.GetPosition_X();
+						float vect_y = (int)Point_On_RayY + wall_conor_y - player.GetPosition_Y();
+						float vect_x = (int)Point_On_RayX + wall_conor_x - player.GetPosition_X();
 
-							float current_rayX = Point_On_RayX - player.GetPosition_X();
-							float current_rayY = Point_On_RayY - player.GetPosition_Y();
+						float current_rayX = Point_On_RayX - player.GetPosition_X();
+						float current_rayY = Point_On_RayY - player.GetPosition_Y();
 
-							float module = sqrt(pow(vect_x, 2) + pow(vect_y, 2));
+						float module = sqrt(pow(vect_x, 2) + pow(vect_y, 2));
 
-							float scalar_product = current_rayY * vect_y + current_rayX * vect_x;
-							float modules_product = module * ray_size;
-							float current_cos = scalar_product / modules_product;
-							p.push_back(make_pair(module, current_cos));
-						}
+						float scalar_product = current_rayY * vect_y + current_rayX * vect_x;
+						float modules_product = module * ray_size;
+						float current_cos = scalar_product / modules_product;
+						p.push_back(make_pair(module, current_cos));
 					}
-
-					sort(p.begin(), p.end());
-
-					if (acos(p.at(0).second) <= conor_per_ray / 2)
-						Is_wallblock_conor = true;
-					if (acos(p.at(1).second) <= conor_per_ray / 2)
-						Is_wallblock_conor = true;
-
-					if (trunc(player.GetPosition_X()) != trunc(Point_On_RayX)
-						&& trunc(player.GetPosition_Y()) != trunc(Point_On_RayY))
-					{
-						if (acos(p.at(2).second) <= conor_per_ray / 2)
-							Is_wallblock_conor = true;
-					}
-					
-
-					VerticalLine::PrintWall(ray_size, i, Is_wallblock_conor);
-
-					while (!DetectedObjects.empty())
-					{
-						DetectedObjects.top().PrintObject();
-						DetectedObjects.pop();
-					}
-
-					break;
 				}
+
+				sort(p.begin(), p.end());
+
+				if (acos(p.at(0).second) <= conor_per_ray / 2.0f)
+					Is_wallblock_conor = true;
+				if (acos(p.at(1).second) <= conor_per_ray / 2.0f)
+					Is_wallblock_conor = true;
+
+				if (trunc(player.GetPosition_X()) != trunc(Point_On_RayX)
+					&& trunc(player.GetPosition_Y()) != trunc(Point_On_RayY))
+				{
+					if (acos(p.at(2).second) <= conor_per_ray / 2.0f)
+						Is_wallblock_conor = true;
+				}
+				
+
+				VerticalLine::PrintWall(ray_size, i, Is_wallblock_conor);
+
+				while (!DetectedObjects.empty())
+				{
+					DetectedObjects.top().PrintObject();
+					DetectedObjects.pop();
+				}
+
+				break;
 			}
 			
 		}
@@ -276,7 +272,7 @@ void ConsoleBufferString::PrintStat(Map& map, const Player& player)
 		for (size_t j = 0; j < 2; j++)
 		{
 			screen[(_console_height - _console_height / 2 - i) * _console_width 
-				+ _console_width / 2 + j] = ';';
+				+ _console_width / 2 + j] = ':';
 		}
 	}
 
@@ -284,13 +280,22 @@ void ConsoleBufferString::PrintStat(Map& map, const Player& player)
 
 	if (player.HasMap())
 	{
-		for (int nx = 0; nx < map.GetHeight(); nx++)
+		int part = map.GetHeight() / 2;
+		int begin = ((int)player.GetPosition_X() / part) * part;
+		int height = begin + part;
+
+		for (int nx = begin; nx < height; nx++)
+		{
 			for (int ny = 0; ny < map.GetWidth(); ny++)
 			{
-				screen[(nx + 1) * _console_width + ny] = map[nx][ny];
+				if (map[nx][ny] != '#')
+					screen[(nx - begin + 1) * _console_width + ny] = ' ';
+				else
+					screen[(nx - begin + 1) * _console_width + ny] = map[nx][ny];
 			}
+		}
 
-		screen[((int)(player.GetPosition_X()) + 1) * _console_width
+		screen[((int)(player.GetPosition_X()) - begin + 1) * _console_width
 			+ (int)(player.GetPosition_Y())] = 'P';
 	}
 
@@ -336,13 +341,14 @@ void ConsoleBufferString::PrintGameOver()
 {
 	string gm = "Game Over, press Ecsape...";
 
-	for (int i = 0; i < gm.size(); i++)
-	{
-		screen[(_console_height / 2) * _console_width +
-			(_console_width / 2 - (gm.size() / 2)) + i] = gm[i];
-	}	
+	PrintStringInCenter(gm);
+}
 
-	WriteInBuffer();
+void ConsoleBufferString::PrintWin()
+{
+	string win = "You win, press Ecsape...";
+
+	PrintStringInCenter(win);
 }
 
 void ConsoleBufferString::ClearScrean()
@@ -357,3 +363,16 @@ void ConsoleBufferString::ClearScrean()
 
 	WriteInBuffer();
 }
+
+void ConsoleBufferString::PrintStringInCenter(string& str)
+{
+
+	for (int i = 0; i < str.size(); i++)
+	{
+		screen[(_console_height / 2) * _console_width +
+			(_console_width / 2 - (str.size() / 2)) + i] = str[i];
+	}
+
+	WriteInBuffer();
+}
+

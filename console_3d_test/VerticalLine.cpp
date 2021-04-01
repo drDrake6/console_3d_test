@@ -19,6 +19,9 @@ void ConsoleBufferString::VerticalLine::PrintObject()
 		case '+':
 			PrintMedKit();
 			break;
+		case 'E':
+			PrintExit();
+			break;
 		case 'T':
 			PrintTrap();
 	    default:
@@ -238,11 +241,11 @@ void ConsoleBufferString::VerticalLine::PrintTrap()
 {
 	Trap& trap = dynamic_cast<Trap&>(_object);
 
-	if(trap.GetDamage() == 5.0f)
+	if(trap.GetDamage() == 20.0f)
 		PrintWeakTrap();
-	else if (trap.GetDamage() == 10.0f)
+	else if (trap.GetDamage() == 40.0f)
 		PrintMediumTrap();
-	else if (trap.GetDamage() == 15.0f)
+	else if (trap.GetDamage() == 60.0f)
 		PrintStrongTrap();
 }
 
@@ -258,17 +261,17 @@ void ConsoleBufferString::VerticalLine::PrintWeakTrap()
 	{
 		if (j >= highest_y && j <= lowest_y)
 		{
-			if (_ray_size >= 18)
+			if (_ray_size >= 6)
 			{
 				_self->screen[j * _self->_console_width
 					+ _current_rays_amount] = 9617;
 			}
-			else if (_ray_size < 18 && _ray_size >= 12)
+			else if (_ray_size < 6 && _ray_size >= 4)
 			{
 				_self->screen[j * _self->_console_width
 					+ _current_rays_amount] = 9618;
 			}
-			else if (_ray_size < 12)
+			else if (_ray_size < 4)
 			{
 				_self->screen[j * _self->_console_width
 					+ _current_rays_amount] = 9619;
@@ -296,7 +299,7 @@ void ConsoleBufferString::VerticalLine::PrintMediumTrap()
 	{
 		if (j >= highest_y && j <= lowest_y)
 		{
-			if (_ray_size >= 18)
+			if (_ray_size >= 6)
 			{
 				_self->screen[j * _self->_console_width
 					+ _current_rays_amount] = 9617;
@@ -342,6 +345,30 @@ void ConsoleBufferString::VerticalLine::PrintStrongTrap()
 	}
 }
 
+void ConsoleBufferString::VerticalLine::PrintExit()
+{
+	int height = (_self->_console_height);
+	int highest_y = (float)(_self->_console_height / 2.0f)
+		- (float)height / _ray_size;
+	int lowest_y = _self->_console_height - highest_y;
+
+	for (int j = 0; j < _self->_console_height; j++)
+	{
+		if (j >= highest_y && j <= lowest_y)
+		{
+			_self->screen[j * _self->_console_width
+				+ _current_rays_amount] = (wchar_t)_object.GetSymbol();
+#ifdef DEBUG
+			WriteConsoleOutputCharacter(_self->hConsole, _self->screen, _self->_size, _self->FirstCell, &(_self->dwBytesWritten));
+#endif
+		}
+		else if (j > lowest_y)
+		{
+			return;
+		}
+	}
+}
+
 void ConsoleBufferString::VerticalLine::PrintWall(float ray_size, int current_rays_amount, bool Is_wallblock_conor)
 {
 	_self->previous_symbol = '!';
@@ -363,22 +390,22 @@ void ConsoleBufferString::VerticalLine::PrintWall(float ray_size, int current_ra
 			}
 			else
 			{
-				if (ray_size >= 18)
+				if (ray_size >= 6)
 				{
 					_self->screen[j * _self->_console_width 
 						+ current_rays_amount] = 9617;
 				}
-				else if (ray_size < 18 && ray_size >= 12)
+				else if (ray_size < 6 && ray_size >= 4)
 				{
 					_self->screen[j * _self->_console_width 
 						+ current_rays_amount] = 9618;
 				}
-				else if (ray_size < 12 && ray_size >= 6)
+				else if (ray_size < 4 && ray_size >= 2)
 				{
 					_self->screen[j * _self->_console_width 
 						+ current_rays_amount] = 9619;
 				}
-				else if (ray_size < 6)
+				else if (ray_size < 2)
 				{
 					_self->screen[j * _self->_console_width 
 						+ current_rays_amount] = 9608;
