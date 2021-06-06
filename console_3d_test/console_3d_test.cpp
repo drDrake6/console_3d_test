@@ -1,5 +1,7 @@
 ﻿#include "Headers.h"
 
+unsigned char AnyKeyPressed();
+
 int main()
 {
 	system("mode con cols=120 lines=40");
@@ -242,6 +244,7 @@ int main()
     while (true)
     {
 	    _fps.current_Calc_Period();
+        AnyKeyPressed();
 	    buffer->Render(map, player, _fps, gameSpace);
 	    if (!player.Controle(map, _fps, gameSpace)) break;
         if (player.GetHP() <= 0.0f) break;
@@ -259,6 +262,9 @@ int main()
         buffer->PrintWin();
         while (!GetAsyncKeyState((unsigned short)Player::BUTTONS::Ecs)) {}
     }
+
+    _CrtDumpMemoryLeaks();
+    return 0;
 
     /*HANDLE hStdout, hNewScreenBuffer;
     SMALL_RECT srctReadRect;
@@ -358,4 +364,17 @@ int main()
         printf("SetConsoleActiveScreenBuffer failed - (%d)\n", GetLastError());
         return 1;
     }*/
+}
+
+unsigned char AnyKeyPressed()
+{
+    for (unsigned short button = 1; button <= 256; button++)
+    {
+        if (GetAsyncKeyState(button))
+        {
+            return button;
+        }
+    }
+
+    return '!';
 }

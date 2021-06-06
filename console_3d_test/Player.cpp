@@ -248,6 +248,7 @@ bool Player::Controle(Map& map, FPS& _fps, GameSpace& gameSpace)
 
 	if (GetAsyncKeyState((unsigned short)BUTTONS::Ecs))
 	{
+		_CrtDumpMemoryLeaks();
 		exit(0);
 	}
 	else
